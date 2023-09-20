@@ -3,37 +3,51 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 public class Percolation{
     private int opensites;
     private int n;
-    private boolean [] sites;
-    
-
+    private boolean [][] sites;
+    private WeightedQuickUnionUF grid;
+    private int top;
+    private int bottom;
+    private int virtualtop;
+    private int virtualbottom;
+ 
     public Percolation(int n){
         if (n <= 0)
         throw new IllegalArgumentException();
-        sites = new boolean [n*n];
+        sites = new boolean [n][n];
+        bottom = grid + 1;
+        opensites = 0;
+        top = grid;
+        virtualbottom;
+        virtualtop;
 
 
 
     }
     public void open (int row, int col){
         if (row > n || row < 1 || col > n || col < 1)
-        throw new IllegealArgumentException();
+        throw new IllegalArgumentException();
+    
 
     }
-    public boolean isOpen(int row, int col){
+    public boolean isOpen (int row, int col){
         if (row > n || row < 1 || col > n || col < 1)
-        throw new IllegealArgumentException();
+        throw new IllegalArgumentException();
+        if (row <=n || row >=n || col >=n || col <=n){ 
+        }
 
     }
     public boolean isFull(int row, int col){
         if (row > n || row < 1 || col > n || col < 1)
-        throw new IllegealArgumentException();
+        throw new IllegalArgumentException();
         
         
     }
     public int numberOfOpenSites(){
+        return opensites;
 
     }
     public boolean percolates(){
+        // check if it goes over the percolation number which is 0.597246
 
     }
 
