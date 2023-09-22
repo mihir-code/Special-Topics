@@ -59,7 +59,9 @@ public class Percolation{
     public boolean isFull(int row, int col){
         if (row > n || row < 1 || col > n || col < 1)
         throw new IllegalArgumentException();
-        if ()
+        if (!isOpen){
+            return true;
+        }
         
         
     }
@@ -68,7 +70,10 @@ public class Percolation{
 
     }
     public boolean percolates(){
-        // check if it goes over the percolation number which is 0.597246
+        if (isOpen == true){
+            return true;
+        } 
+       
 
     }
 
