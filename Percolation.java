@@ -19,13 +19,16 @@ public class Percolation{
 
 
     }
+    private int index(int row, int col){
+        return n *(row-1) + col;
+    }
     public void open (int row, int col){
         if (row > n || row < 1 || col > n || col < 1)
         throw new IllegalArgumentException();
         sites[row][col] = true;
         
         if (row == 1){
-            gridtop.union(row,col);
+            gridtop.union(index(row,col), opensites);
         }
     
 
