@@ -4,9 +4,7 @@ public class Percolation{
     private int opensites;
     private int n;
     private boolean [][] sites;
-    private WeightedQuickUnionUF grid;
-    private int top;
-    private int bottom;
+    private WeightedQuickUnionUF gridtop;
     private int virtualtop;
     private int virtualbottom;
  
@@ -14,18 +12,21 @@ public class Percolation{
         if (n <= 0)
         throw new IllegalArgumentException();
         sites = new boolean [n][n];
-        bottom = grid + 1;
         opensites = 0;
-        top = grid;
-        virtualbottom;
-        virtualtop;
-
+        gridtop = new WeightedQuickUnionUF(n*n+2);
+        virtualbottom = n*n + 1;
+        virtualtop = n * n;
 
 
     }
     public void open (int row, int col){
         if (row > n || row < 1 || col > n || col < 1)
         throw new IllegalArgumentException();
+        sites[row][col] = true;
+        
+        if (row == 1){
+            gridtop.union(row,col);
+        }
     
 
     }
