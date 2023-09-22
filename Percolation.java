@@ -14,7 +14,7 @@ public class Percolation{
         sites = new boolean [n][n];
         opensites = 0;
         gridtop = new WeightedQuickUnionUF(n*n+2);
-        virtualbottom = n*n + 1;
+        virtualbottom = n * n + 1;
         virtualtop = n * n;
 
 
@@ -25,10 +25,25 @@ public class Percolation{
     public void open (int row, int col){
         if (row > n || row < 1 || col > n || col < 1)
         throw new IllegalArgumentException();
-        sites[row][col] = true;
+        sites[row-1][col-1] = true;
         
         if (row == 1){
             gridtop.union(index(row,col), opensites);
+        }
+        if (row == virtualbottom){
+            gridtop.union(index(row,col), opensites);
+        }
+        if (row-1,col){
+            gridtop.union(index(row-1,col), opensites);
+        }
+        if (row +1, col){
+            gridtop.union(index(row+1,col), opensites);
+        }
+        if (row, col -1){
+            gridtop.union(index(row,col-1), opensites);
+        }
+        if (row, col+1){
+            gridtop.union(index(row,col+1), opensites);
         }
     
 
@@ -37,12 +52,14 @@ public class Percolation{
         if (row > n || row < 1 || col > n || col < 1)
         throw new IllegalArgumentException();
         if (row <=n || row >=n || col >=n || col <=n){ 
+            return true;
         }
 
     }
     public boolean isFull(int row, int col){
         if (row > n || row < 1 || col > n || col < 1)
         throw new IllegalArgumentException();
+        if ()
         
         
     }

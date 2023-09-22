@@ -12,12 +12,15 @@ public class PercolationStats {
 
     }
     public double stddev(){
-        
+        return;
     }
     public double confidenceLo(){
 
     }
     public double confidenceHi(){
         
+    }
+    public static void main (String[] args){
+
     }
 }
