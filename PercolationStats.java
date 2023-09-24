@@ -21,24 +21,30 @@ public class PercolationStats {
                     opensites++;
                 }
             }
+            double num = (double)opensites/ n * n;
+            grid[numexperiments] = num;
         }
 
     }
     public double mean(){
+        return StdStats.mean(grid);
         
 
     }
     public double stddev(){
+        return StdStats.stddev(grid);
         
     }
     public double confidenceLo(){
+        return mean() - ((1.96 * stddev()) / Math.sqrt(count));
 
     }
     public double confidenceHi(){
+        return mean() + ((1.96 * stddev()) / Math.sqrt(count));
         
     }
     public static void main (String[] args){
-        System.out.println("stddez is = " + stddez);
+        System.out.println("stddez is = " + stddev());
         System.out.println("mean is = " + mean);
         System.out.println("95% confidence interval is = " + confidenceLo + " , " + confidenceHi);
     }
