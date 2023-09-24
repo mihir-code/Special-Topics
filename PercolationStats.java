@@ -26,6 +26,5 @@ public class PercolationStats {
         System.out.println("stddez is = " + stddez);
         System.out.println("mean is = " + mean);
         System.out.println("95% confidence interval is = " + confidenceLo + " , " + confidenceHi);
-
     }
 }

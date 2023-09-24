@@ -16,6 +16,7 @@ public class Percolation{
         gridtop = new WeightedQuickUnionUF(n*n+2);
         virtualbottom = n * n + 1;
         virtualtop = n * n;
+        this.n = n;
 
 
     }
@@ -26,24 +27,25 @@ public class Percolation{
         if (row > n || row < 1 || col > n || col < 1)
         throw new IllegalArgumentException();
         sites[row-1][col-1] = true;
+        ++opensites;
         
         if (row == 1){
-            gridtop.union(index(row,col), opensites);
+            gridtop.union(index(row,col), virtualtop);
         }
-        if (row == virtualbottom){
-            gridtop.union(index(row,col), opensites);
+        if (row == n){
+            gridtop.union(index(row,col), virtualbottom);
         }
-        if (row-1,col){
-            gridtop.union(index(row-1,col), opensites);
+        if (row > 1 && isOpen(row - 1,col)){
+            gridtop.union(index(row,col), index(row - 1,col));
         }
-        if (row +1, col){
-            gridtop.union(index(row+1,col), opensites);
+        if (col > 1 && isOpen(row, col - 1)){
+            gridtop.union(index(row,col), index(row, col - 1));
         }
-        if (row, col -1){
-            gridtop.union(index(row,col-1), opensites);
+        if (col < n && isOpen(row,col + 1)){
+            gridtop.union(index(row,col), index(row, col + 1));
         }
-        if (row, col+1){
-            gridtop.union(index(row,col+1), opensites);
+        if (row < n && isOpen(row + 1, col)){
+            gridtop.union(index(row,col), index(row +1, col));
         }
     
 
@@ -51,17 +53,19 @@ public class Percolation{
     public boolean isOpen (int row, int col){
         if (row > n || row < 1 || col > n || col < 1)
         throw new IllegalArgumentException();
-        if (row <=n || row >=n || col >=n || col <=n){ 
-            return true;
-        }
+        return sites [row-1][col-1];
+
+    
 
     }
     public boolean isFull(int row, int col){
         if (row > n || row < 1 || col > n || col < 1)
         throw new IllegalArgumentException();
-        if (!isOpen){
-            return true;
+        if ((row > 0 && row <= n) && (col > 0 && col <=n)){
+            return gridtop.find(virtualtop) == gridtop.find(index(row,col));
         }
+        else throw new IllegalArgumentException();
+    
         
         
     }
@@ -70,9 +74,7 @@ public class Percolation{
 
     }
     public boolean percolates(){
-        if (isOpen == true){
-            return true;
-        } 
+        return gridtop.find(virtualtop) == gridtop.find(virtualbottom);
        
 
     }
