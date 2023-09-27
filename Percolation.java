@@ -5,6 +5,7 @@ public class Percolation{
     private int n;
     private boolean [][] sites;
     private WeightedQuickUnionUF gridtop;
+    private WeightedQuickUnionUF backwash; // checking if bottom is connected
     private int virtualtop;
     private int virtualbottom;
  
@@ -14,6 +15,7 @@ public class Percolation{
         sites = new boolean [n][n];
         opensites = 0;
         gridtop = new WeightedQuickUnionUF(n*n+2);
+        backwash = new WeightedQuickUnionUF(n*n+1);
         virtualbottom = n * n + 1;
         virtualtop = n * n;
         this.n = n;
@@ -31,20 +33,27 @@ public class Percolation{
         
         if (row == 1){
             gridtop.union(index(row,col), virtualtop);
+            backwash.union(index(row,col), virtualtop);
         }
         if (row == n){
             gridtop.union(index(row,col), virtualbottom);
+            
         }
         if (row > 1 && isOpen(row - 1,col)){
             gridtop.union(index(row,col), index(row - 1,col));
+            backwash.union(index(row,col), index(row - 1,col));
         }
         if (col > 1 && isOpen(row, col - 1)){
             gridtop.union(index(row,col), index(row, col - 1));
+            backwash.union(index(row,col), index(row, col - 1));
+
         }
         if (col < n && isOpen(row,col + 1)){
             gridtop.union(index(row,col), index(row, col + 1));
+            backwash.union(index(row,col), index(row, col + 1));
         }
         if (row < n && isOpen(row + 1, col)){
+            gridtop.union(index(row,col), index(row +1, col));
             gridtop.union(index(row,col), index(row +1, col));
         }
     
@@ -62,7 +71,7 @@ public class Percolation{
         if (row > n || row < 1 || col > n || col < 1)
         throw new IllegalArgumentException();
         if ((row > 0 && row <= n) && (col > 0 && col <=n)){
-            return gridtop.find(virtualtop) == gridtop.find(index(row,col));
+            return backwash.find(virtualtop) == backwash.find(index(row,col));
         }
         else throw new IllegalArgumentException();
     
