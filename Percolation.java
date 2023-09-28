@@ -16,8 +16,8 @@ public class Percolation{
         opensites = 0;
         gridtop = new WeightedQuickUnionUF(n*n+2);
         backwash = new WeightedQuickUnionUF(n*n+1);
-        virtualbottom = n * n + 1;
-        virtualtop = n * n;
+        virtualbottom = n* n + 1;
+        virtualtop = 0;
         this.n = n;
 
 
@@ -32,11 +32,11 @@ public class Percolation{
         ++opensites;
         
         if (row == 1){
-            gridtop.union(virtualtop, index(row,col));
-            backwash.union(virtualtop, index(row,col));
+            gridtop.union(index(row,col), virtualtop);
+            backwash.union(index(row,col), virtualtop);
         }
         if (row == n){
-            gridtop.union(virtualbottom, index(row,col));
+            backwash.union(index(row,col), virtualbottom);
         
         }
         if (row > 1 && isOpen(row - 1,col)){
@@ -84,7 +84,7 @@ public class Percolation{
 
     }
     public boolean percolates(){
-        return gridtop.find(virtualtop) == gridtop.find(virtualbottom);
+        return backwash.find(virtualtop) == backwash.find(virtualbottom);
         // this is probably wrong
        
 

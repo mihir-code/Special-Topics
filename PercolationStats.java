@@ -8,21 +8,19 @@ public class PercolationStats {
     public PercolationStats(int n, int trials){
         if (n <=0 || trials <=0)
         throw new IllegalAccessError();
-        this.trials = trials;
         grid = new double[trials];
         for (int numexperiments = 0; numexperiments < trials; numexperiments++){
             Percolation x = new Percolation(n);
             int opensites = 0;
             while (!x.percolates()) {
-                int row = StdRandom.uniformInt(1, n+1);
-                int col = StdRandom.uniformInt(1, n+1);
+                int row = StdRandom.uniformInt(n) + 1;
+                int col = StdRandom.uniformInt(n) + 1;
                 if (!x.isOpen(row, col)){
                     x.open(row,col);
                     opensites++;
                 }
             }
-            double num = (double)opensites /n * n;
-            grid[numexperiments] = num;
+            grid[numexperiments] = (double)opensites/(n*n);
         }
 
     }
