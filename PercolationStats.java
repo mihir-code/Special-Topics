@@ -21,7 +21,7 @@ public class PercolationStats {
                     opensites++;
                 }
             }
-            double num = (double) opensites/n * n;
+            double num = (double)opensites /n * n;
             grid[numexperiments] = num;
         }
 
@@ -50,6 +50,6 @@ public class PercolationStats {
 
         System.out.println("mean is                    = " + stats.mean());
         System.out.println("stddev is                  = " +  stats.stddev());
-        System.out.println("95% confidence interval is =  [" + stats.confidenceLo() + " , " + stats.confidenceHi() + "] ");
+        System.out.println("95% confidence interval    =  [" + stats.confidenceLo() + " , " + stats.confidenceHi() + "] ");
     }
 }

@@ -32,12 +32,12 @@ public class Percolation{
         ++opensites;
         
         if (row == 1){
-            gridtop.union(index(row,col), virtualtop);
-            backwash.union(index(row,col), virtualtop);
+            gridtop.union(virtualtop, index(row,col));
+            backwash.union(virtualtop, index(row,col));
         }
         if (row == n){
-            gridtop.union(index(row,col), virtualbottom);
-            
+            gridtop.union(virtualbottom, index(row,col));
+        
         }
         if (row > 1 && isOpen(row - 1,col)){
             gridtop.union(index(row,col), index(row - 1,col));
@@ -54,7 +54,7 @@ public class Percolation{
         }
         if (row < n && isOpen(row + 1, col)){
             gridtop.union(index(row,col), index(row +1, col));
-            gridtop.union(index(row,col), index(row +1, col));
+            backwash.union(index(row,col), index(row +1, col));
         }
     
 
@@ -63,6 +63,7 @@ public class Percolation{
         if (row > n || row < 1 || col > n || col < 1)
         throw new IllegalArgumentException();
         return sites [row-1][col-1];
+        // find another way to write this
 
     
 
@@ -74,8 +75,8 @@ public class Percolation{
             return backwash.find(virtualtop) == backwash.find(index(row,col));
         }
         else throw new IllegalArgumentException();
+        // find another way to do this
     
-        
         
     }
     public int numberOfOpenSites(){
@@ -84,6 +85,7 @@ public class Percolation{
     }
     public boolean percolates(){
         return gridtop.find(virtualtop) == gridtop.find(virtualbottom);
+        // this is probably wrong
        
 
     }
