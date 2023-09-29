@@ -6,8 +6,8 @@ public class PercolationStats {
     private final int numexperiments;
 
     public PercolationStats(int n, int trials) { 
-        if (n <=0 || trials <=0) {
-            throw new IllegalAccessError();
+        if (n <=0 || trials <= 0) {
+            throw new IllegalArgumentException();
         }
         numexperiments = trials;
         grid = new double[numexperiments];
