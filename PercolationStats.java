@@ -3,15 +3,15 @@ import edu.princeton.cs.algs4.StdStats;
 
 public class PercolationStats {
     private final double[] grid;
-    private final int numexperiments;
+    private final int trials;
 
     public PercolationStats(int n, int trials) { 
         if (n <=0 || trials <= 0) {
             throw new IllegalArgumentException();
         }
-        numexperiments = trials;
-        grid = new double[numexperiments];
-        for (int i = 0; i < numexperiments; i++){
+        this.trials = trials;
+        grid = new double[trials];
+        for (int i = 0; i < trials; i++){
             Percolation x = new Percolation(n);
             int opensites = 0;
             while (!x.percolates()) {
@@ -37,11 +37,11 @@ public class PercolationStats {
         
     }
     public double confidenceLo(){
-        return mean() - ((1.96 * stddev()) / Math.sqrt(numexperiments));
+        return mean() - ((1.96 * stddev()) / Math.sqrt(trials));
 
     }
     public double confidenceHi(){
-        return mean() + ((1.96 * stddev()) / Math.sqrt(numexperiments));
+        return mean() + ((1.96 * stddev()) / Math.sqrt(trials));
         
     }
     public static void main (String[] args){
