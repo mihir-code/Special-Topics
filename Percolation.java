@@ -21,9 +21,11 @@ public class Percolation{
 
 
     }
+    
     private int index(int row, int col){
         return n *(row-1) + col;
     }
+
     public void open (int row, int col){
         if (row > n || row <=0 || col > n || col <= 0){
             throw new IllegalArgumentException();
@@ -52,37 +54,28 @@ public class Percolation{
         if (col < n && isOpen(row,col + 1)){
             gridtop.union(index(row,col), index(row, col + 1));
         }
-    
-
     }
+
     public boolean isOpen (int row, int col){
         if (row > n || row <=0 || col > n || col <= 0){
             throw new IllegalArgumentException();
         }
         return sites [row-1][col-1];
-        
-
-    
-
     }
+
     public boolean isFull(int row, int col){
         if ((row > 0 && row <= n) && (col > 0 && col <=n)){
             return gridtop.find(virtualtop) == gridtop.find(index(row,col));
         }
         else throw new IllegalArgumentException();
-        
-    
-        
     }
+
     public int numberOfOpenSites(){
         return opensites;
-
     }
+
     public boolean percolates(){
         return gridtop.find(virtualtop) == gridtop.find(virtualbottom);
-        
-       
-
     }
 
 }
