@@ -5,7 +5,7 @@ public class PercolationStats {
     private final double[] grid;
     private final int numexperiments;
 
-    public PercolationStats(int n, int trials){
+    public PercolationStats(int n, int trials) { 
         if (n <=0 || trials <=0) {
             throw new IllegalAccessError();
         }
