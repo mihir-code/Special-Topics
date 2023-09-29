@@ -1,9 +1,9 @@
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation{
-    private int opensites;
+    private int gridsite;
     private final int n;
-    private final boolean [][] sites;
+    private final boolean [][] grid;
     private final WeightedQuickUnionUF gridtop;
     private final int virtualtop;
     private final int virtualbottom;
@@ -12,8 +12,8 @@ public class Percolation{
         if (n <= 0) {
             throw new IllegalArgumentException();
         }
-        sites = new boolean [n][n];
-        opensites = 0;
+        grid = new boolean [n][n];
+        gridsite = 0;
         gridtop = new WeightedQuickUnionUF(n*n+2);
         virtualbottom = n * n + 1;
         virtualtop = 0;
@@ -30,8 +30,8 @@ public class Percolation{
         if (row > n || row <=0 || col > n || col <= 0){
             throw new IllegalArgumentException();
         }
-        sites[row-1][col-1] = true;
-        ++opensites;
+        grid[row-1][col-1] = true;
+        ++gridsite;
         
         if (row == 1){
             gridtop.union(index(row,col), virtualtop);
@@ -60,7 +60,7 @@ public class Percolation{
         if (row > n || row <=0 || col > n || col <= 0){
             throw new IllegalArgumentException();
         }
-        return sites [row-1][col-1];
+        return grid [row-1][col-1];
     }
 
     public boolean isFull(int row, int col){
@@ -71,7 +71,7 @@ public class Percolation{
     }
 
     public int numberOfOpenSites(){
-        return opensites;
+        return gridsite;
     }
 
     public boolean percolates(){
