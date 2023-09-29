@@ -5,7 +5,6 @@ public class Percolation{
     private final int n;
     private final boolean [][] sites;
     private final WeightedQuickUnionUF gridtop;
-    private final WeightedQuickUnionUF backwash; // checking if bottom is connected
     private final int virtualtop;
     private final int virtualbottom;
  
@@ -16,7 +15,6 @@ public class Percolation{
         sites = new boolean [n][n];
         opensites = 0;
         gridtop = new WeightedQuickUnionUF(n*n+2);
-        backwash = new WeightedQuickUnionUF(n*n+1);
         virtualbottom = n * n + 1;
         virtualtop = 0;
         this.n = n;
