@@ -1,5 +1,5 @@
-import java.util.LinkedList;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class Deque<Item> implements Iterable<Item> {
     private int size = 0;
@@ -7,9 +7,9 @@ public class Deque<Item> implements Iterable<Item> {
     private Node last;
 
     private class Node{
-        Item item;
-        Node next;
-        Node prev;
+        private Item item;
+        private Node next;
+        private Node prev;
     }
 
     public Deque(){
@@ -25,6 +25,9 @@ public class Deque<Item> implements Iterable<Item> {
 
     }
     public void addFirst(Item item){
+        if (item == null){
+            throw new IllegalArgumentException();
+        }
         Node oldfirst = first;
         first = new Node();
         first.next = oldfirst;
@@ -36,6 +39,9 @@ public class Deque<Item> implements Iterable<Item> {
 
     }
     public void addLast(Item item){
+        if (item == null){
+            throw new IllegalArgumentException();
+        }        
         Node oldlast = last;
         last = new Node();
         last.prev = oldlast;
@@ -45,6 +51,9 @@ public class Deque<Item> implements Iterable<Item> {
 
     }
     public Item removeFirst(){
+        if (size == 0){
+            throw new IllegalArgumentException();
+        }
         Item item = first.item;
         if (size > 1){
             first = first.next;
@@ -61,6 +70,9 @@ public class Deque<Item> implements Iterable<Item> {
 
     }
     public Item removeLast(){
+        if (size == 0){
+            throw new IllegalArgumentException();
+        }    
         Item item = last.item;
         if (size > 1){
             last = last.prev;
@@ -71,13 +83,34 @@ public class Deque<Item> implements Iterable<Item> {
             first = null;
         }
         size -=1;
-        return size;
+        return item;
        
 
 
     }
     public Iterator<Item> iterator(){
 
+
+
+    }
+    private class Iteratorfirst implements Iterator<Item>{
+        private Node current= first;
+        
+        public boolean hasNext(){
+            return current.next !=last;
+        }
+        public Item next(){
+            if(!hasNext()){
+                throw new NoSuchElementException();
+            }
+            else{
+                current = current.next;
+                return current.item;
+            }
+        }
+        public void remove(){
+            throw new UnsupportedOperationException();
+        }
     }
     public static void main(String args[]){
 
