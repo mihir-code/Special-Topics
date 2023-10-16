@@ -33,7 +33,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         
 
     }
-    public Item dequeue(){ // if 1/4 full, half it
+    public Item dequeue(){ 
         if (size == 0){
             throw new java.util.NoSuchElementException();
         }
@@ -62,6 +62,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     }
     public Iterator<Item> iterator(){
+        
 
     }
     public static void main(String[] args){
