@@ -51,7 +51,7 @@ public class Deque<Item> implements Iterable<Item> {
             throw new IllegalArgumentException();
         }
         Item item = first.item;
-        if (size > 1){
+        if (size >= 1){
             first = first.next;
             first.prev = null;
         }
@@ -70,7 +70,7 @@ public class Deque<Item> implements Iterable<Item> {
             throw new IllegalArgumentException();
         }    
         Item item = last.item;
-        if (size > 1){
+        if (size >= 1){
             last = last.prev;
             last.next = null;
         }
@@ -109,7 +109,7 @@ public class Deque<Item> implements Iterable<Item> {
         }
     }
     public static void main(String args[]){
-        Deque<String> deck = new Deque<>();
+        Deque<String> deck = new Deque<String>();
         while (!StdIn.isEmpty()){
             String read = StdIn.readString();
             if (read.equals("-")){

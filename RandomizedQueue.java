@@ -28,7 +28,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             throw new IllegalArgumentException();
         }
         if (size == queue.length){
-            doublesize(2*queue.length);
+            doublesize(2 * queue.length);
         }
         queue[size] = item;
         size = size + 1;
@@ -43,9 +43,9 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             queue[random] = queue[size - 1];
         }
         queue[size - 1] = null;
-        size -=1;
+        size--;
         if (size == queue.length/4 && size > 0){
-            doublesize(queue.length/2);
+            doublesize(queue.length / 2);
         }
         return item;
     }
@@ -61,7 +61,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         return new Iteratortype();
     }
     private class Iteratortype implements Iterator<Item>{
-        int counter;
+        private int counter;
         public Item next(){
             if (!hasNext()){
                 throw new java.util.NoSuchElementException();
@@ -73,7 +73,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             
         }
         public boolean hasNext(){
-            return queue[counter] != null;
+            return queue[counter++] != null;
         }
         public void remove(){
             throw new UnsupportedOperationException();
@@ -83,7 +83,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     }
     public static void main(String args[]){
-        RandomizedQueue<String> random = new RandomizedQueue<>();
+        RandomizedQueue<String> random = new RandomizedQueue<String>();
         while (!StdIn.isEmpty()){
             String read = StdIn.readString();
             if (read.equals("-")){
