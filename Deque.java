@@ -35,10 +35,6 @@ public class Deque<Item> implements Iterable<Item> {
         first.next = oldfirst;
         first.item = item;
 
-        
-
-        
-
     }
     public void addLast(Item item){
         if (item == null){
@@ -48,8 +44,6 @@ public class Deque<Item> implements Iterable<Item> {
         last = new Node();
         last.prev = oldlast;
         last.item = item;
-
-
 
     }
     public Item removeFirst(){
@@ -65,7 +59,7 @@ public class Deque<Item> implements Iterable<Item> {
             last = null;
             first = null;
         }
-        size -=1;
+        size--;
         return item;
         
 
@@ -84,7 +78,7 @@ public class Deque<Item> implements Iterable<Item> {
             last = null;
             first = null;
         }
-        size -=1;
+        size --;
         return item;
        
 
@@ -118,7 +112,7 @@ public class Deque<Item> implements Iterable<Item> {
         Deque<String> deck = new Deque<>();
         while (!StdIn.isEmpty()){
             String read = StdIn.readString();
-            if (read.equals("amazing")){
+            if (read.equals("-")){
                 System.out.print(deck.removeLast());
             }
             else{

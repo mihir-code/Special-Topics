@@ -9,8 +9,6 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     public RandomizedQueue(){
         queue = (Item[]) new Object[2];
-
-        
     }
     public boolean isEmpty(){
         return size == 0;
