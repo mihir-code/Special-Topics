@@ -8,7 +8,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     private Item[] queue;
 
     public RandomizedQueue(){
-        queue = (Item[]) new Object[2];
+        queue = (Item[]) new Object[8];
     }
     public boolean isEmpty(){
         return size == 0;
@@ -61,19 +61,25 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         return new Iteratortype();
     }
     private class Iteratortype implements Iterator<Item>{
-        private int counter;
+        private int counter = 0;
+        private int[] returnOrder;
+
+        public Iteratortype(){
+            returnOrder = StdRandom.permutation(size);
+
+        }
         public Item next(){
             if (!hasNext()){
                 throw new java.util.NoSuchElementException();
             }
             else {
-                Item item = queue[counter++];
+                Item item = queue[returnOrder[counter++]];
                 return item;
             }
             
         }
         public boolean hasNext(){
-            return queue[counter++] != null;
+            return counter < size;
         }
         public void remove(){
             throw new UnsupportedOperationException();
@@ -83,7 +89,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     }
     public static void main(String args[]){
-        RandomizedQueue<String> random = new RandomizedQueue<String>();
+        RandomizedQueue<String> random = new RandomizedQueue<>();
         while (!StdIn.isEmpty()){
             String read = StdIn.readString();
             if (read.equals("-")){

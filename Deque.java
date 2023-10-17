@@ -32,6 +32,13 @@ public class Deque<Item> implements Iterable<Item> {
         first = new Node();
         first.next = oldfirst;
         first.item = item;
+        if (oldfirst != null){
+            oldfirst.prev = first;
+        }
+        else{
+            last = first;
+        }
+        size++;
 
     }
     public void addLast(Item item){
@@ -42,6 +49,13 @@ public class Deque<Item> implements Iterable<Item> {
         last = new Node();
         last.prev = oldlast;
         last.item = item;
+        if (oldlast != null){
+            oldlast.next = last;
+        }
+        else{
+            first = last;
+        }
+        size++;
 
     }
     public Item removeFirst(){
@@ -59,9 +73,6 @@ public class Deque<Item> implements Iterable<Item> {
         }
         size--;
         return item;
-        
-
-
     }
     public Item removeLast(){
         if (size == 0){
@@ -78,47 +89,75 @@ public class Deque<Item> implements Iterable<Item> {
         }
         size--;
         return item;
-       
-
-
     }
     public Iterator<Item> iterator(){
         return new Iteratorfirst();
-
-
     }
     private class Iteratorfirst implements Iterator<Item>{
         private Node current = first;
         
         public boolean hasNext(){
-            return current.next != last;
+            return current != null;
         }
         public Item next(){
             if(!hasNext()){
             throw new java.util.NoSuchElementException();
             }
             else{
+                Item item = current.item;
                 current = current.next;
-                return current.item;
+                return item;
             }
         }
         public void remove(){
             throw new UnsupportedOperationException();
         }
     }
-    public static void main(String args[]){
-        Deque<String> deck = new Deque<String>();
-        while (!StdIn.isEmpty()){
-            String read = StdIn.readString();
-            if (read.equals("-")){
-                System.out.print(deck.removeLast());
-            }
-            else{
-                deck.addFirst(read);
-            }
+    public static void main(String[] args) {
+        Deque<String> myDeque = new Deque<String>();
+        try {
+            myDeque.addFirst(null);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Testing exception for null add first. " + e.toString());
+
+        }
+        try {
+            myDeque.addLast(null);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Testing exception for null add last. " + e.toString());
+
+        }
+        myDeque.addFirst("Matt");
+        myDeque.addLast("Carrie");
+        System.out.println(myDeque.toString());
+        myDeque.addFirst("Danny");
+        myDeque.addLast("Kaylee");
+        myDeque.addLast("James");
+        myDeque.addLast("Abby Jo");
+
+        for (String name : myDeque) {
+            System.out.println("EFL: " + name);
         }
 
+        System.out.println(myDeque);
+        System.out.println(myDeque.removeFirst());
+        System.out.println(myDeque.removeLast());
+        System.out.println(myDeque);
+        System.out.println(myDeque.size());
+        System.out.println(myDeque.removeFirst());
+        System.out.println(myDeque.removeFirst());
+        System.out.println(myDeque.removeFirst());
+        System.out.println(myDeque.removeFirst());
+        System.out.println(myDeque.size());
+        myDeque.addFirst("Danny");
+        myDeque.addLast("Kaylee");
+        myDeque.addLast("James");
+        myDeque.addLast("Abby Jo");
+        System.out.println(myDeque.removeLast());
+        System.out.println(myDeque.removeLast());
+        System.out.println(myDeque.removeLast());
+        System.out.println(myDeque.removeLast());
+        System.out.println(myDeque.size());
+
     }
-
-
 }
