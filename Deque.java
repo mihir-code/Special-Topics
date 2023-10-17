@@ -32,7 +32,7 @@ public class Deque<Item> implements Iterable<Item> {
         first = new Node();
         first.next = oldfirst;
         first.item = item;
-        if (oldfirst != null){
+        if (oldfirst != null){ // to ensure that there are no pointer issues
             oldfirst.prev = first;
         }
         else{
@@ -49,7 +49,7 @@ public class Deque<Item> implements Iterable<Item> {
         last = new Node();
         last.prev = oldlast;
         last.item = item;
-        if (oldlast != null){
+        if (oldlast != null){ // to ensure that there are no pointer issues
             oldlast.next = last;
         }
         else{
@@ -78,7 +78,7 @@ public class Deque<Item> implements Iterable<Item> {
         if (size == 0){
             throw new java.util.NoSuchElementException();
         }    
-        Item item = last.item;
+        Item item = last.item; // to ensure proper placing
         if (size > 1){
             last = last.prev;
             last.next = null;
@@ -114,7 +114,7 @@ public class Deque<Item> implements Iterable<Item> {
         }
     }
     public static void main(String[] args) {
-        Deque<String> myDeque = new Deque<String>();
+        Deque<String> myDeque = new Deque<String>(); // mat gave his code for main and it tested properly
         try {
             myDeque.addFirst(null);
         } catch (IllegalArgumentException e) {

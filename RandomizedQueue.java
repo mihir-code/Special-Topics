@@ -8,7 +8,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     private Item[] queue;
 
     public RandomizedQueue(){
-        queue = (Item[]) new Object[8];
+        queue = (Item[]) new Object[8]; // only a warning and 8 is a much better number than 2
     }
     public boolean isEmpty(){
         return size == 0;
@@ -62,7 +62,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }
     private class Iteratortype implements Iterator<Item>{
         private int counter = 0;
-        private int[] returnOrder;
+        private int[] returnOrder; // need an array to maintain returnorder
 
         public Iteratortype(){
             returnOrder = StdRandom.permutation(size);
@@ -89,7 +89,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     }
     public static void main(String args[]){
-        RandomizedQueue<String> random = new RandomizedQueue<>();
+        RandomizedQueue<String> random = new RandomizedQueue<>(); //mat gave his code for main and it tested properly
         while (!StdIn.isEmpty()){
             String read = StdIn.readString();
             if (read.equals("-")){
