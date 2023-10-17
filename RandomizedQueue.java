@@ -1,15 +1,19 @@
 import java.util.Iterator;
-import edu.princeton.cs.algs4.*;
+import edu.princeton.cs.algs4.StdRandom;
+import edu.princeton.cs.algs4.StdIn;
+
 
 public class RandomizedQueue<Item> implements Iterable<Item> {
     private int size = 0;
-    private Item[] queue = (Item[]) new Object[2];
+    private Item[] queue;
 
     public RandomizedQueue(){
+        queue = (Item[]) new Object[2];
+
         
     }
     public boolean isEmpty(){
-        return size() == 0;
+        return size == 0;
     }
     public int size(){
         return size;    
@@ -60,8 +64,6 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }
     private class Iteratortype implements Iterator<Item>{
         int counter;
-
-
         public Item next(){
             if (!hasNext()){
                 throw new java.util.NoSuchElementException();
@@ -86,7 +88,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         RandomizedQueue<String> random = new RandomizedQueue<>();
         while (!StdIn.isEmpty()){
             String read = StdIn.readString();
-            if (read.equals("amazing")){
+            if (read.equals("-")){
                 System.out.print(random.dequeue());
             }
             else{
