@@ -1,6 +1,4 @@
 import java.util.Iterator;
-import java.util.NoSuchElementException;
-
 import edu.princeton.cs.algs4.StdIn;
 
 public class Deque<Item> implements Iterable<Item> {
@@ -48,10 +46,10 @@ public class Deque<Item> implements Iterable<Item> {
     }
     public Item removeFirst(){
         if (size == 0){
-            throw new IllegalArgumentException();
+            throw new java.util.NoSuchElementException();
         }
         Item item = first.item;
-        if (size >= 1){
+        if (size > 1){
             first = first.next;
             first.prev = null;
         }
@@ -67,10 +65,10 @@ public class Deque<Item> implements Iterable<Item> {
     }
     public Item removeLast(){
         if (size == 0){
-            throw new IllegalArgumentException();
+            throw new java.util.NoSuchElementException();
         }    
         Item item = last.item;
-        if (size >= 1){
+        if (size > 1){
             last = last.prev;
             last.next = null;
         }
@@ -78,7 +76,7 @@ public class Deque<Item> implements Iterable<Item> {
             last = null;
             first = null;
         }
-        size --;
+        size--;
         return item;
        
 
@@ -90,14 +88,14 @@ public class Deque<Item> implements Iterable<Item> {
 
     }
     private class Iteratorfirst implements Iterator<Item>{
-        private Node current= first;
+        private Node current = first;
         
         public boolean hasNext(){
-            return current.next !=last;
+            return current.next != last;
         }
         public Item next(){
             if(!hasNext()){
-                throw new NoSuchElementException();
+            throw new java.util.NoSuchElementException();
             }
             else{
                 current = current.next;
