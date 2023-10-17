@@ -1,18 +1,18 @@
-import edu.princeton.cs.algs4.StdRandom;
+import java.util.Iterator;
+import edu.princeton.cs.algs4.*;
 
 public class RandomizedQueue<Item> implements Iterable<Item> {
-    private int size =0;
-    private Item[] queue;
+    private int size = 0;
+    private Item[] queue = (Item[]) new Object[2];
 
     public RandomizedQueue(){
-
+        
     }
     public boolean isEmpty(){
         return size() == 0;
     }
     public int size(){
-        return size;
-        
+        return size;    
     }
     private void doublesize(int capacity){
         Item[] copy = (Item[]) new Object[capacity];
@@ -30,8 +30,6 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         }
         queue[size] = item;
         size = size + 1;
-        
-
     }
     public Item dequeue(){ 
         if (size == 0){
@@ -44,12 +42,10 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         }
         queue[size - 1] = null;
         size -=1;
-
         if (size == queue.length/4 && size > 0){
             doublesize(queue.length/2);
         }
         return item;
-
     }
     public Item sample(){
         if (size == 0){
@@ -58,14 +54,45 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         int random = StdRandom.uniformInt(size);
         Item item = queue[random];
         return item;
-
-
     }
     public Iterator<Item> iterator(){
-        
+        return new Iteratortype();
+    }
+    private class Iteratortype implements Iterator<Item>{
+        int counter;
+
+
+        public Item next(){
+            if (!hasNext()){
+                throw new java.util.NoSuchElementException();
+            }
+            else {
+                Item item = queue[counter++];
+                return item;
+            }
+            
+        }
+        public boolean hasNext(){
+            return queue[counter] != null;
+        }
+        public void remove(){
+            throw new UnsupportedOperationException();
+        }
+
+
 
     }
-    public static void main(String[] args){
+    public static void main(String args[]){
+        RandomizedQueue<String> random = new RandomizedQueue<>();
+        while (!StdIn.isEmpty()){
+            String read = StdIn.readString();
+            if (read.equals("amazing")){
+                System.out.print(random.dequeue());
+            }
+            else{
+                random.enqueue(read);
+            }
+        }
 
     }
 

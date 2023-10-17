@@ -1,6 +1,8 @@
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import edu.princeton.cs.algs4.StdIn;
+
 public class Deque<Item> implements Iterable<Item> {
     private int size = 0;
     private Node first;
@@ -113,6 +115,16 @@ public class Deque<Item> implements Iterable<Item> {
         }
     }
     public static void main(String args[]){
+        Deque<String> deck = new Deque<>();
+        while (!StdIn.isEmpty()){
+            String read = StdIn.readString();
+            if (read.equals("amazing")){
+                System.out.print(deck.removeLast());
+            }
+            else{
+                deck.addFirst(read);
+            }
+        }
 
     }
 
