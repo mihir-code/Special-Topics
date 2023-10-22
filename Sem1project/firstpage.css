@@ -1,0 +1,20 @@
+body {
+    color: red;
+    background-color: red;
+    cursor: pointer; 
+}
+h1 {
+    color: green;
+    cursor: pointer;
+
+}
+h2 {
+    color: magenta;
+}
+head {
+    height: 60px;
+    width: 40px;
+    color: blue;
+    background-color: red;
+}
+
