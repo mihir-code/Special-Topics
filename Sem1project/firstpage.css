@@ -1,31 +1,75 @@
-body {
-    color: white;
-    cursor: pointer; 
-    background-color: lightblue;
-    opacity: 0.9;
+body, html {
+   height: 100%;
 
+}
+*{
+    box-sizing: border-box;
+    font-family: monospace;
+}
+.bg-img{
+    background-image:url(rice.png);
+    min-height: 350px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+
+
+}
+.container{ 
+    position: absolute;
+    right:0;
+    margin: 20px;
+    max-width: 300px;
+    padding: 16px;
+    background-color: white;
+    
+}
+
+input[type=text],input[type=password]{
+    width:100%;
+    padding: 12px;
+    margin: 5px 0 22px 0;
+    border: none;
+    background: #f1f1f1
+
+}
+input[type=text]:focus,input[type=password]:focus{
+    background-color: #ddd;
+    outline: none;
+}
+.btn {
+    background-color: #04AA6d;
+    color: wheat;
+    padding: 16px 20px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    opacity: 0.6;
+}
+.btn-hover{
+    opacity: 1;
 }
 .center{
     display: block;
-    border-radius: 20%;
     margin-left: auto;
     margin-right: auto;
+    width: 50%;
+}
+.firstcharacter{
+    color: rgb(3, 3, 3);
+    float:left;
+    font-family: monospace;
+    font-size: 176px;
+    line-height: 60px;
+    padding-top: 4px;
+    padding-right: 7px;
+    padding-left: 3px;
+
 
 }
-h1 {
-    color: rgb(88, 24, 24);
-    cursor: pointer;
-    font: serif;
-    font-size: 50px;
-    text-align: center;
 
 
-}
-p {
-    color: rgb(22, 48, 58);
-    font: lighter;
-    
-}
 p2{
     color: rgb(22, 48, 58);
     font: lighter;
