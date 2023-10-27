@@ -1,8 +1,22 @@
-<html>
-<body>
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-Welcome <?php echo $_POST["name"]; ?><br>
-Your email address is: <?php echo $_POST["email"]; ?>
+    $email = $_POST["email"];
+    $psw = $_POST["psw"];
 
-</body>
-</html>
+    $validemail ="mihir.motukuri@gmail.com";
+    $validpass ="1234";
+
+    if ($email === $validemail && $psw === $validpass) {
+        header("Location: ricepage.php");
+        exit();
+    }
+    else{
+        header("Location: firstpage.html");
+        exit();
+    }
+
+
+}
+
+?>
