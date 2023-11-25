@@ -36,7 +36,7 @@ if ($_SERVER["request_method"] == "post" && isset($_POST['submit'])){
         if(empty($error) ){
             $insertQuery = $db ->prepare("INSERT INTO users (name,email,password) Values(?,?,?); ");
             $insertQuery->bind_param("sss", $fname, $email, $hash);
-            $result =  $insertQuery ->$_COOKIE();
+            $result =  $insertQuery ->execute();
 
             if($result){
                 $error .='<p class="nice job"> You did it. You are officially a genius!</p>';
@@ -46,5 +46,9 @@ if ($_SERVER["request_method"] == "post" && isset($_POST['submit'])){
             }
         }
     }
+
+    $query->die();
+    $insertQuery->die();
+    mysqli_close($db);
 
 }
