@@ -13,5 +13,7 @@ if ($_SERVER["Request_Method"] == "post" && isset($_POST['submit'])){
     if(empty($password)){
         $error .='<p class="error">Enter the password.</p>';
     }
-    
+    if(empty($error)){
+        if($query = $db->prepare("SELECT * FROM users WHERE email = ?"))
+    }
 }
