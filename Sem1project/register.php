@@ -8,7 +8,7 @@ if ($_SERVER["request_method"] == "post" && isset($_POST['submit'])){
     $fname = trim($_POST['name']);
     $password = trim($_POST['email']);
     $hash = hash($password,PASSWORD_BCRYPT);
-    $confirm = trim($_POST[confirm_password]);
+    $confirm = trim($_POST["confirm"]);
     $email = trim($_POST['email']);
 
 
@@ -47,7 +47,7 @@ if ($_SERVER["request_method"] == "post" && isset($_POST['submit'])){
         }
     }
 
-    $query->die();
+    $query->close();
     $insertQuery->die();
     mysqli_close($db);
 
