@@ -7,5 +7,5 @@ define('Dbname','registration page');
 $db = mysqli_connect(Dbserver, Dbusername, Dbpassword, Dbname);
 
 if($db === false){
-    die("Connection error " . mysqli_connect);
+    die("Connection error " . mysqli_connect_error());
 }
