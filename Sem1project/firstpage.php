@@ -38,7 +38,6 @@ bad math.
     <p3>If you are interested in doing the right thing, please scroll down and create an account!</p3>
     <head>
         <link rel="stylesheet" href="test1.css">
-        <script defer src="login.js"></script>
     </head>
 
 </html>

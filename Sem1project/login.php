@@ -36,6 +36,12 @@ if ($_SERVER["Request_Method"] == "post" && isset($_POST['submit'])){
     }
     mysqli_close($db);
 }
+?>
 
-    // find a way to tie in previous welcome page.
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Login Page</title>
+
 

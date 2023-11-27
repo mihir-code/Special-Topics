@@ -52,3 +52,4 @@ if ($_SERVER["request_method"] == "post" && isset($_POST['submit'])){
     mysqli_close($db);
 
 }
+?>
