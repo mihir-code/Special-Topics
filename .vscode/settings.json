@@ -17,6 +17,19 @@
             "database": "rice",
             "username": "mihir",
             "askForPassword": true
+        },
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "database": "riceapp",
+            "username": "root",
+            "name": "test"
         }
     ]
 }
