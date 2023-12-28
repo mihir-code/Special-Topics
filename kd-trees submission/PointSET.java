@@ -3,7 +3,6 @@ import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.SET;
 import java.util.Iterator;
 import edu.princeton.cs.algs4.StdDraw;
-import 
 
 /*
 public class Point2D implements Comparable <Point2D>{
