@@ -1,4 +1,9 @@
 public class KdTree{
+    private static class Node{
+        private Point2D p;
+        private RectHV rect;
+        private 
+    }
     public KdTree(){
 
     }

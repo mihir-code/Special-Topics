@@ -1,6 +1,10 @@
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.SET;
+import java.util.Iterator;
+import edu.princeton.cs.algs4.StdDraw;
+import 
+
 /*
 public class Point2D implements Comparable <Point2D>{
     public Point2D(double x, double y){
@@ -94,7 +98,9 @@ public class PointSET{
         if(p == null){
             throw new IllegalArgumentException();
         }
-        points.add(p);
+        if(!points.contains(p)){
+            points.add(p);
+        }
 
 
     }
@@ -102,16 +108,42 @@ public class PointSET{
         if(p == null){
             throw new IllegalArgumentException();
         }
-        return points.contains(p); // if the point contains it or not.
+        return points.contains(p); // if the set contains it or not.
 
     }
     public void draw(){
+        StdDraw.pointSET(points);
+
 
     }
     public Iterable<Point2D> range(RectHV rect){
+        if(rect == null){
+            throw new IllegalArgumentException();
+        }
+        Set<Point2D> setrange = new SET<Point2D>();
+        for (Point2D p : points){
+            if (rect.contains(p)){
+                setrange.add(p);
+            }
+        }
+       return setrange;
 
     }
     public Point2D nearest(Point2D p){
+        if(points.isEmpty()){
+            return null;
+        }
+        Point2D near = null;
+        double min = Double.Max_value;
+        for(Point2D allpoints : points){
+            double actdistance = allpoints.distanceTo(p);
+            if(actdistance < min){
+                near = allpoints;
+                min = actdistance;
+            }
+        }
+        return near;
+        
         
     }
 }
