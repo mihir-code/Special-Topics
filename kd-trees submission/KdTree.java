@@ -28,12 +28,12 @@ public class KdTree{
 
     }
     public void insert(Point2D p){
-        return insertt(Node p2, Point2d p);
+        return insert(Node p2, Point2d p);
 
         
 
     }
-    private void insert(Node p2, Point2D p){
+    private void insert(Node p2, Point2D p, boolean splitVert){
         if(root == null){
             return new Node(p, null, null, null);
         }
