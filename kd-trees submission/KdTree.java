@@ -4,31 +4,35 @@ import edu.princeton.cs.algs4.Node;
 import edu.princeton.cs.algs4.SET;
 
 public class KdTree{
-    private int size = 0;
+    private Node root = null; // very important.
     private static class Node{
         private Point2D p;
         private RectHV rect;
         private Node lb; // left bottom need both for vertical and horizontal
         private Node rt; // right top
-        private Node root = null; // very important.
+        private int size = 0;
 
     }
-    public Node(Point2D p, RectHV rect, Node lb, Node rt){
+    public Node(Point2D p, RectHV rect, Node lb, Node rt, int size){
         p = this.p;
         rect = this.rect;
-        lb = this.lb;
-        rt = this.rt;
+        size = this.size;
+        lb = null; // not sure if not setting it would result in a problem. 
+        rt = null; 
     }
     public boolean isEmpty(){
         return root == null;
 
     }
     public int size(){
-        return size;
+        return size(root);
 
 
     }
     public void insert(Point2D p){
+        if (p == null){
+            throw new IllegalArgumentException();
+        }
         return insert(Node p2, Point2d p, boolean splitVert);
 
         
@@ -39,16 +43,15 @@ public class KdTree{
             return new Node(p, null, null, null);
         }
         size++;
-        int x = p2.compareTo(p);
+        int x = p.compareTo(p2); // simply comparing two points.
         else if(x < 0){
-            p = p.left;
+            p.lb = insert(p.lb);
         }
         else if (x > 0){
-            p = p.right;
+            p.rt = insert(p.rt);
         }
         else{
-            return p.value;
-        }
+            p2 = p;
         return null;
         }
 
