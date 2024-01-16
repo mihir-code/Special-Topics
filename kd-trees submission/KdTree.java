@@ -38,7 +38,7 @@ public class KdTree{
         
 
     }
-    private void insert(Node p2, Point2D p){
+    private Node insert(Node p2, Point2D p){
         if(p2 == null){
             return new Node(p, null, null, null);
         }
@@ -75,16 +75,24 @@ public class KdTree{
         return 0;
     }
     public boolean contains(Point2D p){
-        if(!insert(Point2d p)){
+        return contains(p,p2, !splitvert) != null;
+    }
+    private Node contains(Point2D p, Node p2, boolean splitvert){
+        boolean splitvert = false;
+        if (p2 == null){
             return false;
         }
-        else{
-            return true;
+        int compare = compare(p, p2.p);
+        if (compare < 0){
+            return contains(p2.lb, p);
         }
-
+        else if (compare > 0){
+            return contains(p2.rt, p);
+        }
+        return p2;
 
     }
-    private boolean contains(Point2D p, boolean splitvert, )
+
     public void draw(){
         StdDraw(p);
         StdDraw(rect);
