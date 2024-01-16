@@ -33,39 +33,58 @@ public class KdTree{
         if (p == null){
             throw new IllegalArgumentException();
         }
-        return insert(Node p2, Point2d p, boolean splitVert);
+        return insert(Node p2, Point2d p);
 
         
 
     }
-    private void insert(Node p2, Point2D p, boolean splitVert){
-        if(root == null){
+    private void insert(Node p2, Point2D p){
+        if(p2 == null){
             return new Node(p, null, null, null);
         }
         size++;
-        int x = p.compareTo(p2); // simply comparing two points.
-        else if(x < 0){
+        int compare = compare(p, p2.p) // simply comparing two points won't work.
+        else if(compare < 0){
             p.lb = insert(p.lb);
         }
-        else if (x > 0){
+        else if (compare > 0){
             p.rt = insert(p.rt);
         }
         else{
-            p2 = p;
-        return null;
+            p2.p = p;
         }
+        return p2;
 
     }
+    private double compare(Point2D p, Point2D p1){ // the range is from 0 to 1
+        if (p.x() < p1.x()){
+            return -1;
+        }
+        else if (p.x() > p1.x()){
+            return 1;
+        }
+        else{
+            if(p.y() < p1.y()){
+                return -1;
+            }
+            else if(p.y() > p1.y()){
+                return 1;
+            }
+            }
+        }
+        return 0;
+    }
     public boolean contains(Point2D p){
-        if(!insert(Point2d p){
+        if(!insert(Point2d p)){
             return false;
-        })
+        }
         else{
             return true;
         }
 
 
     }
+    private boolean contains(Point2D p, boolean splitvert, )
     public void draw(){
         StdDraw(p);
         StdDraw(rect);
