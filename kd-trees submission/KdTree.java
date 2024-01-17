@@ -46,24 +46,25 @@ public class KdTree {
         if(p2 == null){
             return new Node(p, new RectHV(xmin, xmax, ymin, ymax));
         }
-        size++;
         int compare = compare(p, p2.p, splitvert); // simply comparing two points won't work.
         p2.rectangle = new RectHV(xmin, xmax, ymin, ymax);
         if(compare < 0){
-            if(splitvert){ // red
-                p2.lb = insert(p.lb, p, false, xmin, p2.p.x(), ymin, ymax);
+            if(splitvert){
+                p2.lb = insert(p.lb, p, false, xmin, p2.p.x(), ymin, ymax); // blue
             } else{
-                p2.lb = insert(p.lb, p, true, xmin, xmax, ymin, p2.p.y());
+                p2.lb = insert(p.lb, p, true, xmin, xmax, ymin, p2.p.y()); // red
             }
         }
-        else{
-                if(splitvert){
-                    p2.lb = insert(p.lb, p, true, xmin, xmax, ymin, ymax);
-                }
+        else if (compare > 0){ 
+            if(splitvert){
+              p2.rt = insert(p.rt, p, false, x.p.x(), xmax, ymin, ymax);  // blue
+            }else{
+              p2.rt = insert(p.rt, p, true, xmin, xmax, p2.p.y(), ymax);
+            }
 
         return p2;
     }
-}
+
 
     private double compare(Point2D p, Point2D p1, boolean splitvert){ // the range is from 0 to 1
         if(splitvert){
@@ -118,7 +119,14 @@ public class KdTree {
         }
         StdDraw.setPenColor(StdDraw.BLACK);
         StdDraw.setPenRadius(0.1);
-        p2.p.draw();
+        if(splitvert){
+            StdDraw.setPenColor(StdDraw.BLUE);
+            StdDraw.setPenRadius();
+        }
+        else{
+            StdDraw.setPenColor(StdDraw.RED);
+            StdDraw.setPenRadius();
+        }
 
     }
 

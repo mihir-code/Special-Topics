@@ -77,10 +77,10 @@ public class RectHV{
 }
 */
 public class PointSET{
-    public PointSET(){
-       private SET<Point2D> points;
+    private PointSET(){
+         SET<Point2D> points;
 
-       public SET(){
+    public PointSET(){
         points = new SET<Point2D>();
        }
     }
