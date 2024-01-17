@@ -77,9 +77,8 @@ public class RectHV{
 }
 */
 public class PointSET{
-    private void PointSET(){
-         SET<Point2D> points;
-    }
+    private SET<Point2D> points;
+
     public PointSET(){
         points = new SET<Point2D>();
        }

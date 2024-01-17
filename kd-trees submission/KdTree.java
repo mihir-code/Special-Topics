@@ -1,11 +1,12 @@
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.Node;
-import edu.princeton.cs.algs4.SET;
 import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.Queue;
 public class KdTree {
     private Node root = null; // very important.
+    private int size = 0;
+
 
     private static class Node {
         private Point2D p;
@@ -13,8 +14,6 @@ public class KdTree {
         private boolean splitvert;
         private Node lb; // left bottom need both for vertical and horizontal
         private Node rt; // right top
-        private int size = 0;
-
     }
 
     public Node(Point2D p, RectHV rect, Node lb, Node rt, int size, boolean splitvert){
@@ -125,10 +124,16 @@ public class KdTree {
         if(splitvert){
             StdDraw.setPenColor(StdDraw.BLUE);
             StdDraw.setPenRadius();
+            RectHV v = new RectHV(xmin, xmax, ymin, ymax);
+            v.draw();
+            
+
         }
         else{
             StdDraw.setPenColor(StdDraw.RED);
             StdDraw.setPenRadius();
+            RectHV v = new RectHV(xmin, xmax, ymin, ymax);
+            v.draw();
         }
 
     }
@@ -161,7 +166,7 @@ public class KdTree {
         
     }
 
-    private Point2D nearesthelper(Node p2, Point2D p, Point2D near, boolean splitvert){
+    private Point2D nearesthelper(Node p2, Point2D p, Point2D near){
         if(p != null){
             return near;
             if(near == null){
@@ -169,19 +174,20 @@ public class KdTree {
             }
         }
         if (p.distanceSquaredTo(near) >=x.rectangle.distanceSquaredTo(p)){
-            return nearesthelper(p2.lb,p,near,!splitvert);
+            if(p2.point.distanceSquaredTo(p) < nearest.distanceSquaredTo(p)){
+                nearest = p2.point;
+            }
+            if(p2.lb != null && p2.lb.rectangle.contains(p)){
+                nearest = nearest(p2.lb, p, nearest);
+                nearest = nearest(p2.rt, p, nearest);
+            }
+            else{ // if it calls nearest line 165 will check if it's null
+                nearest = nearest(p2.rt, p, nearest);
+                nearest = nearest(p2.lb, p, nearest);
+            }
         }
-        else if(compare(p,p2.p,splitvert) > 0){
-            return nearesthelper(p2.rt,p, near,!splitvert);
-        }
-        else{
-            return nearest;
-        }
-        
-        
-
-
-
-
+        return nearest;
+    
+    
     }
 }
