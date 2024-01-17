@@ -2,6 +2,7 @@ import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.Node;
 import edu.princeton.cs.algs4.SET;
+import edu.princeton.cs.algs4.StdDraw;
 
 public class KdTree{
     private Node root = null; // very important.
@@ -20,7 +21,7 @@ public class KdTree{
         size = this.size;
         lb = null; // not sure if not setting it would result in a problem. 
         rt = null; 
-        splitvert = splitvert;
+        rect = this.rect;
     }
     public boolean isEmpty(){
         return root == null;
@@ -35,14 +36,23 @@ public class KdTree{
         }
         return insert(p2, p,!splitvert);
     }
-    private Node insert(Node p2, Point2D p, boolean splitvert){
+    private Node insert(Node p2, Point2D p, boolean splitvert, double xmin, double xmax, double ymin, double ymax){
         if(p2 == null){
-            return new Node(p, true);
+            return new Node(p, new RectHV(xmin, xmax, ymin, ymax));
         }
         size++;
         int compare = compare(p, p2.p, splitvert) // simply comparing two points won't work.
-        else if(compare < 0){
-            p.lb = insert(p.lb, p, !splitvert);
+        p2.rectangle = new RectHV(xmin, xmax, ymin, ymax)
+        if(compare < 0){
+            if(splitvert){
+                p2.lb = insert(p.lb, p, false, xmin, p2.p.x(), ymin, ymax);
+            } else{
+                p2.lb = insert(p.lb, p, true, xmin, xmax, ymin, p2.p.y());
+
+            }
+            else if{
+                p2.lb = insert(p.)
+            }
         }
         else if (compare > 0){
             p.rt = insert(p.rt, p, !splitvert);
@@ -94,12 +104,16 @@ public class KdTree{
         return p2;
 
     }
-    public void draw(){
-        if(splitvert == true){
-            StdDraw()
+    public void draw(){        
+    }
+    private void draw(Node p2, boolean splitvert){ 
+        if(p2 == null){
+            return;
         }
+        StdDraw.setPenColor(StdDraw.BLACK);
+        StdDraw.setPenRadius(0.1);
+        p2.p.draw();
 
-       
 
 
     }
