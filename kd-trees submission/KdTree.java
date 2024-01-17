@@ -3,7 +3,7 @@ import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.Node;
 import edu.princeton.cs.algs4.SET;
 import edu.princeton.cs.algs4.StdDraw;
-
+import edu.princeton.cs.algs4.Queue;
 public class KdTree {
     private Node root = null; // very important.
 
@@ -63,15 +63,22 @@ public class KdTree {
             }
 
         return p2;
+        }
     }
 
 
     private double compare(Point2D p, Point2D p1, boolean splitvert){ // the range is from 0 to 1
+        if(p2 == null){
+            return null;
+        }
+        if (p.x() == p1.x() || p.y() == p1.y()){
+                return 1;
+            }
         if(splitvert){
-            if(p.x() < p1.x()){
+            if(p.x() < p1.x()){ // some variable inconsistency here, need to check
                 return -1;
             }
-            else(p.x() > p1.x()){
+            else if(p.x() > p1.x()){
                 return 1;
             } 
         }
@@ -79,16 +86,12 @@ public class KdTree {
             if(p.y() < p1.y()){
                 return -1;
             }
-            else(p.y() > p1.y()){
+            else if(p.y() > p1.y()){
                 return 1;
             }
+
+        return 0.0;
         }
-        else{
-            if (p.x() == p1.x() || p.y() == p1.y()){
-                return 1;
-            }
-        }
-        return 0;
     }
 
     public boolean contains(Point2D p) {
@@ -131,10 +134,54 @@ public class KdTree {
     }
 
     public Iterable<Point2d> range(RectHV rect) {
+        Queue<Point2D> rangepoints = new Queue<>();
+        range(rect, root, queue);
+        return range;
+        
+
+    }
+    private void helperrange(RectHV rect, Node p2, Queue<Point2D> queue){
+        if (p2 == null || !p2.rectangle.intersects(rect)) // put p2 first or else it would be redundent.
+            return;
+        if (rect.contains(x.p)){
+            queue.enqueue(x.p);
+        }
+        range(rect, p2.rt, queue);
+        range(rect, p2.lb, queue);
 
     }
 
     public Point2D nearest(Point2D p) {
+        if(isEmpty()){
+            return null;
+        }
+        else{
+            nearesthelper(root, p2, null);
+        }
+        
+    }
+
+    private Point2D nearesthelper(Node p2, Point2D p, Point2D near, boolean splitvert){
+        if(p != null){
+            return near;
+            if(near == null){
+                near = p2.p; // first call so that makes sense
+            }
+        }
+        if (p.distanceSquaredTo(near) >=x.rectangle.distanceSquaredTo(p)){
+            return nearesthelper(p2.lb,p,near,!splitvert);
+        }
+        else if(compare(p,p2.p,splitvert) > 0){
+            return nearesthelper(p2.rt,p, near,!splitvert);
+        }
+        else{
+            return nearest;
+        }
+        
+        
+
+
+
 
     }
 }

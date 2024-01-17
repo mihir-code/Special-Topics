@@ -77,13 +77,12 @@ public class RectHV{
 }
 */
 public class PointSET{
-    private PointSET(){
+    private void PointSET(){
          SET<Point2D> points;
-
+    }
     public PointSET(){
         points = new SET<Point2D>();
        }
-    }
     public boolean isEmpty(){ 
         if(points.isEmpty()){
             return true;
