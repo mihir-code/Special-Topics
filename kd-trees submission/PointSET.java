@@ -59,17 +59,19 @@ public class PointSET{
 
     }
     public Point2D nearest(Point2D p){
-        if(points.isEmpty()){
+        if(isEmpty()){
             return null;
+        }
+        if(p == null){
+            throw new IllegalArgumentException();
         }
         Point2D  min = null;
         for(Point2D allpoints : points){
             if(min == null || allpoints.distanceSquaredTo(p) < min.distanceSquaredTo(p)){
                 min = allpoints;
             }
-        }
+        }        
         return min;
-        
-        
+
     }
 }

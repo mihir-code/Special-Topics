@@ -5,7 +5,8 @@ import edu.princeton.cs.algs4.Queue;
 
 public class KdTree {
     private Node root; // very important.
-    private int size = 0;
+    private int size;
+
 
     private static class Node {
         private Point2D p;
@@ -20,22 +21,21 @@ public class KdTree {
             rt = null; 
         }        
     }
+    public KdTree(){
+        size = 0;
+    }
     public boolean isEmpty() {
         return size == 0;
-
     }
-
     public int size() {
         return size; 
     }
-
     public void insert(Point2D p) {
         if (p == null) {
             throw new IllegalArgumentException();
         }
         root = insert(root, p, true,0,0,1,1);
     }
-
     private Node insert(Node p2, Point2D p, boolean splitvert, double xmin, double ymin, double xmax, double ymax){
         if(p2 == null){
             size++;
@@ -126,7 +126,7 @@ public class KdTree {
             return;
         }
         StdDraw.setPenColor(StdDraw.BLACK);
-        StdDraw.setPenRadius(0.1);
+        StdDraw.setPenRadius(0.01);
         p2.p.draw();
         if(splitvert){
             StdDraw.setPenColor(StdDraw.RED);
@@ -139,18 +139,16 @@ public class KdTree {
         else{
             StdDraw.setPenColor(StdDraw.BLUE);
             StdDraw.setPenRadius();
-            RectHV v = new RectHV(p2.rect.xmin(),p2.p.y(),p2.rect.xmax(), p2.p.y());
-            v.draw();
+            RectHV h = new RectHV(p2.rect.xmin(),p2.p.y(),p2.rect.xmax(), p2.p.y());
+            h.draw();
             draw(p2.lb, true);
             draw(p2.rt, true);
-
         }
-
     }
 
     public Iterable<Point2D> range(RectHV rect) {
         Queue<Point2D> rangepoints = new Queue<>();
-        range(root, rect,  rangepoints);
+        range(root, rect, rangepoints);
         return rangepoints;
         
 
@@ -164,25 +162,23 @@ public class KdTree {
         range(p2.lb, rect, queue);
         range(p2.rt, rect, queue);
 
-    }
-
+    }   
     public Point2D nearest(Point2D p) {
         if(isEmpty()){
             return null;
         }
         else{
-            return nearest(root, p2, null);
+            return nearest(root, p, null);
         }
         
     }
-
     private Point2D nearest(Node p2, Point2D p, Point2D near){
         if(p2 != null){
             if(near == null){
                 near = p2.p; // first call so that makes sense
             }
         }
-        if (p.distanceSquaredTo(near) >=p2.rect.distanceSquaredTo(p)){
+        if (p.distanceSquaredTo(near) >= p2.rect.distanceSquaredTo(p)){
             if(p2.p.distanceSquaredTo(p) < near.distanceSquaredTo(p)){
                 near = p2.p;
             }
