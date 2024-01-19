@@ -11,10 +11,9 @@ public class PointSET{
         points = new SET<Point2D>();
        }
     public boolean isEmpty(){ 
-        if(points.isEmpty()){
-            return true;
-        }
+        return points.isEmpty();
     }
+      
     public int size(){
         return points.size();
 
@@ -41,7 +40,7 @@ public class PointSET{
         StdDraw.setPenRadius(.01);
         StdDraw.setPenColor(StdDraw.BLACK);
         for(Point2D p : points){
-            point.draw();
+            p.draw();
         }
 
 
