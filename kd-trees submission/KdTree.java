@@ -26,12 +26,12 @@ public class KdTree {
     }
 
     public boolean isEmpty() {
-        return root == null;
+        return root;
 
     }
 
     public int size() {
-        return size(root); // check again
+        return size; 
     }
 
     public void insert(Point2D p) {
@@ -43,6 +43,7 @@ public class KdTree {
 
     private Node insert(Node p2, Point2D p, boolean splitvert, double xmin, double xmax, double ymin, double ymax){
         if(p2 == null){
+            size++;
             return new Node(p, new RectHV(xmin, xmax, ymin, ymax));
         }
         int compare = compare(p, p2.p, splitvert); // simply comparing two points won't work.
@@ -68,11 +69,8 @@ public class KdTree {
 
     private double compare(Point2D p, Point2D p1, boolean splitvert){ // the range is from 0 to 1
         if(p2 == null){
-            return null;
+            return 0.0;
         }
-        if (p.x() == p1.x() || p.y() == p1.y()){
-                return 1;
-            }
         if(splitvert){
             if(p.x() < p1.x()){ // some variable inconsistency here, need to check
                 return -1;
@@ -80,12 +78,24 @@ public class KdTree {
             else if(p.x() > p1.x()){
                 return 1;
             } 
+            else if(p.y() > p1.y()){
+                return 1;
+            }
+            else if(p.y() < p2.y()){
+                return -1;
+            }
         }
         else{
             if(p.y() < p1.y()){
                 return -1;
             }
             else if(p.y() > p1.y()){
+                return 1;
+            }
+            else if(p.x() < p1.x()){
+                return -1;
+            }
+            else if(p.x() > p1.x()){
                 return 1;
             }
 
@@ -113,6 +123,7 @@ public class KdTree {
 
     public void draw() {
         clear();
+        draw(root, true);
     }
 
     private void draw(Node p2, boolean splitvert) {
@@ -146,10 +157,10 @@ public class KdTree {
 
     }
     private void helperrange(RectHV rect, Node p2, Queue<Point2D> queue){
-        if (p2 == null || !p2.rectangle.intersects(rect)) // put p2 first or else it would be redundent.
+        if (p2 == null && rect.rectangle.intersects(p2.rect)) // put p2 first or else it would be redundent.
             return;
-        if (rect.contains(x.p)){
-            queue.enqueue(x.p);
+        if (rect.contains(p2.p)){
+            queue.enqueue(p2.p);
         }
         range(rect, p2.rt, queue);
         range(rect, p2.lb, queue);
