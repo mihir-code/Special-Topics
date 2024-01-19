@@ -37,7 +37,12 @@ public class PointSET{
 
     }
     public void draw(){
-        StdDraw.pointSET(points);
+        StdDraw.clear();
+        StdDraw.setPenRadius(.01);
+        StdDraw.setPenColor(StdDraw.BLACK);
+        for(Point2D p : points){
+            point.draw();
+        }
 
 
     }
@@ -45,7 +50,7 @@ public class PointSET{
         if(rect == null){
             throw new IllegalArgumentException();
         }
-        Set<Point2D> setrange = new SET<Point2D>();
+        SET<Point2D> setrange = new SET<Point2D>();
         for (Point2D p : points){
             if (rect.contains(p)){
                 setrange.add(p);
@@ -58,16 +63,13 @@ public class PointSET{
         if(points.isEmpty()){
             return null;
         }
-        Point2D near = null;
-        double min = Double.Max_value;
+        Point2D  min = null;
         for(Point2D allpoints : points){
-            double actdistance = allpoints.distanceTo(p);
-            if(actdistance < min){
-                near = allpoints;
-                min = actdistance;
+            if(min == null || allpoints.distanceSquaredTo(p) < min.distanceSquaredTo(p)){
+                min = allpoints;
             }
         }
-        return near;
+        return min;
         
         
     }

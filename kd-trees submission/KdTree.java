@@ -1,6 +1,5 @@
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
-import edu.princeton.cs.algs4.Node;
 import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.Queue;
 public class KdTree {
@@ -14,16 +13,17 @@ public class KdTree {
         private boolean splitvert;
         private Node lb; // left bottom need both for vertical and horizontal
         private Node rt; // right top
-    }
+    
 
-    public Node(Point2D p, RectHV rect, Node lb, Node rt, int size, boolean splitvert){
+    private Node(Point2D p, RectHV rect, Node lb, Node rt, boolean splitvert){
         p = this.p;
         rect = this.rect;
-        size = this.size;
         lb = null; // not sure if not setting it would result in a problem. 
         rt = null; 
-        rect = this.rect;
+        splitvert = this.splitvert;
+
     }
+}
 
     public boolean isEmpty() {
         return root;
@@ -156,7 +156,7 @@ public class KdTree {
         
 
     }
-    private void helperrange(RectHV rect, Node p2, Queue<Point2D> queue){
+    private void range(RectHV rect, Node p2, Queue<Point2D> queue){
         if (p2 == null && rect.rectangle.intersects(p2.rect)) // put p2 first or else it would be redundent.
             return;
         if (rect.contains(p2.p)){
@@ -172,12 +172,12 @@ public class KdTree {
             return null;
         }
         else{
-            nearesthelper(root, p2, null);
+            helper(root, p2, null);
         }
         
     }
 
-    private Point2D nearesthelper(Node p2, Point2D p, Point2D near){
+    private Point2D helper(Node p2, Point2D p, Point2D near){
         if(p != null){
             return near;
             if(near == null){
