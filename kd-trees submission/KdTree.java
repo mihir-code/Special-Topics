@@ -1,3 +1,7 @@
+/* Mihir Motukuri attests that this code is their original work and was written in compliance with the class Academic Integrity and Collaboration Policy found in the syllabus.  */
+// The challenging part on this assignment was learning how to use splitvert to properly represent the lines. But after thinking about it, I realized I could add a boolean into the insert method which would alternate.
+// Another thing that was hard was realizing that you need to have a RectHV object for the Node to properly insert points.
+
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.StdDraw;
@@ -15,8 +19,8 @@ public class KdTree {
         private Node rt; // right top
 
         public Node(Point2D p, RectHV rect){
-            p = this.p;
-            rect = this.rect;
+            this.p = p;
+            this.rect = rect;
             lb = null; // not sure if not setting it would result in a problem. 
             rt = null; 
         }        
@@ -34,25 +38,25 @@ public class KdTree {
         if (p == null) {
             throw new IllegalArgumentException();
         }
-        root = insert(root, p, true,0,0,1,1);
+        root = insert(root, p, true, 0, 0, 1, 1);
     }
     private Node insert(Node p2, Point2D p, boolean splitvert, double xmin, double ymin, double xmax, double ymax){
         if(p2 == null){
             size++;
-            return new Node(p, new RectHV(xmin, ymin, xmax, ymax));
+            return new Node(point, new RectHV(xmin, ymin, xmax, ymax));
         }
         p2.rect = new RectHV(xmin, ymin, xmax, ymax);
         int compare = compare(p, p2.p, splitvert); // simply comparing two points won't work.
         if(compare < 0){
             if(splitvert){
-                p2.lb = insert(p2.lb, p, false, xmin, ymin, p2.p.x(), ymax); // blue
+                p2.lb = insert(p2.lb, p, false, xmin, ymin, p2.p.x(), ymax); 
             } else {
-                p2.lb = insert(p2.lb, p, true, xmin, ymin, xmax, p2.p.y()); // red
+                p2.lb = insert(p2.lb, p, true, xmin, ymin, xmax, p2.p.y()); 
             }
         }
         else if (compare > 0){ 
             if(splitvert){
-              p2.rt = insert(p2.rt, p, false, p2.p.x(),ymin, xmax, ymax);  // blue
+              p2.rt = insert(p2.rt, p, false, p2.p.x(),ymin, xmax, ymax);  
             }else{
               p2.rt = insert(p2.rt, p, true, xmin, p2.p.y(), xmax, ymax);
             }
@@ -112,7 +116,7 @@ public class KdTree {
         } else if (compare > 0) {
             return contains(p2.rt, p, !splitvert);
         }
-        return p2;
+        return p2; // look over tis
 
     }
 
@@ -177,12 +181,12 @@ public class KdTree {
             if(near == null){
                 near = p2.p; // first call so that makes sense
             }
-        }
+        
         if (p.distanceSquaredTo(near) >= p2.rect.distanceSquaredTo(p)){
             if(p2.p.distanceSquaredTo(p) < near.distanceSquaredTo(p)){
                 near = p2.p;
-            }
-            if(p2.lb != null && p2.lb.rect.contains(p)){
+            } 
+            if(p2.lb != null && p2.lb.rect.contains(p)){ 
                 near = nearest(p2.lb, p, near);
                 near = nearest(p2.rt, p, near);
             }
@@ -191,6 +195,7 @@ public class KdTree {
                 near = nearest(p2.lb, p, near);
             }
         }
+    }
         return near;
     
     
