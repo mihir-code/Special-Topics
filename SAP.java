@@ -1,9 +1,12 @@
-
+import edu.princeton.cs.algs4.Digraph;
 
 public class SAP{
+        Digraph g;
 
     public SAP(Digraph G){
+        this.g = g;
         
+      
     }
     
     public int length(int v, int w){

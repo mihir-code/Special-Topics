@@ -1,0 +1,6 @@
+Each vertex v is an integer that represents synset and each connection/edge from v->x shows that.
+
+
+Need to keep track of how many nouns there are.
+Need to find the distance(do by ID).
+Need to track everything.
