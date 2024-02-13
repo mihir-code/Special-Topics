@@ -15,18 +15,19 @@ public class WordNet{
 
         store = new Hashmap<Integer, String>(); // stores synsets
         tracker = new Hashmap<String, Bag<Integer>>(); // stores nouns and related ids
-
+        
 
     }
     
-    private int Syn(){ // for reading the synsets
+    private int Syn(String synsets){ // for reading the synsets
         In in = new In(synsets);
         int count = 0;
         while (in.HasNextLine()){
+            count++;
             String line = in.readline();
-            String[] parts = line.split(","); // split by comma for 
+            String[] parts = line.split(","); // split by comma for parts
             int id = Integer.parseint(parts[0]);
-            store.put(id,parts[1]);
+            store.put(id, parts[1]);
             String[] noun = parts[1].split(" "); //split by space for nouns
             for (String n: nouns){
                 if(store.get(n) != null){
@@ -46,7 +47,13 @@ public class WordNet{
 
     }
     
-    private static void Hyp(){ // for reading the hypnyms 
+    private void Hyp(String hypernyms){ // for reading the hypnyms 
+        In in = new in(hypernyms);
+        while (in.HasNextLine){
+            int line = in.readInt();
+            int[] parts = line.split();
+            
+        }
 
     }
     public Iterable<String> nouns(){
