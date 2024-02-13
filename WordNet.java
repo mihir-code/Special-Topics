@@ -15,10 +15,8 @@ public class WordNet{
 
         store = new Hashmap<Integer, String>(); // stores synsets
         tracker = new Hashmap<String, Bag<Integer>>(); // stores nouns and related ids
-        
 
     }
-    
     private int Syn(String synsets){ // for reading the synsets
         In in = new In(synsets);
         int count = 0;
@@ -41,10 +39,8 @@ public class WordNet{
                 }
             }
             count++;
-
         }
         return count;
-
     }
     
     private void Hyp(String hypernyms){ // for reading the hypnyms 
@@ -52,6 +48,7 @@ public class WordNet{
         while (in.HasNextLine){
             int line = in.readInt();
             int[] parts = line.split();
+            int id = Integer.parseInt(parts[0]);
             
         }
 
