@@ -1,16 +1,23 @@
 import edu.princeton.cs.algs4.Digraph;
+import edu.princeton.cs.algs4.BreadthFirstDirectedPaths;
+import edu.princeton.cs.algs4.Hashmap;
+import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs.StdIn;
+import edu.princeton.cs.algs.StdOut;
+
 
 public class SAP{
-        Digraph g;
+        Digraph G;
 
     public SAP(Digraph G){
-        this.g = g;
+        this.G = G;
         
       
     }
     
     public int length(int v, int w){
-        
+
+
     }
 
     public int ancestor(int v, int w){
@@ -24,8 +31,16 @@ public class SAP{
 
     }
 
-    public static void main(String[] args){
-        
+    public static void main(String[] args) {
+        In in = new In(args[0]);
+        Digraph G = new Digraph(in);
+        SAP sap = new SAP(G);
+        while (!StdIn.isEmpty()) {
+            int v = StdIn.readInt();
+            int w = StdIn.readInt();
+            int length   = sap.length(v, w);
+            int ancestor = sap.ancestor(v, w);
+            StdOut.printf("length = %d, ancestor = %d\n", length, ancestor);
+        }
     }
-
 }
