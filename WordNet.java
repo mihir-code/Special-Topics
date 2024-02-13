@@ -1,4 +1,4 @@
-import edu.princeton.cs.algs4.BFS;
+import edu.princeton.cs.algs4.BreadthFirstDirectedPaths;
 import edu.princeton.cs.algs4.in;
 import edu.prinecton.cs.algs4.SAP;
 import edu.princeton.cs.algs4.Digraph;
@@ -71,6 +71,13 @@ public class WordNet{
 
     }
     public String sap(String nounA, String nounB){
+        /*for(int i = 1; i < noun.length; i++){
+            if (HasPathTo(nounA, nounB) == true){
+                return noun[i];
+            }
+            else if (dis)
+        }
+*/
         
     }
     public static void main(String[] args){

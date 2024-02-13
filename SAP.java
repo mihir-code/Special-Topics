@@ -7,7 +7,9 @@ import edu.princeton.cs.algs.StdOut;
 
 
 public class SAP{
-        Digraph G;
+        private final Digraph G;
+        private Hashmap<Integer,Integer> store;
+        
 
     public SAP(Digraph G){
         this.G = G;
@@ -16,6 +18,8 @@ public class SAP{
     }
     
     public int length(int v, int w){
+        sap(v,w);
+
 
 
     }
