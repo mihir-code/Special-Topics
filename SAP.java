@@ -50,7 +50,7 @@ public class SAP{
         BreadthFirstDirectedPaths pathw = new BreadthFirstDirectedPaths(G, w);
         for (int i = 0; i < g.V(); i++){
             if (pathv.HasPathTo(i) && pathw.HasPathTo(i)){
-                int vw = pathv.distTo(i) + pathw.distTo(i);
+           //      int vw = pathv.distTo(i) + pathw.distTo(i); Here is where the code has to be different for ancestor
                 if (vw < ancestor){
                     ancestor = vw;
                 if (vw == ancestor){
