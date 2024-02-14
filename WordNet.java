@@ -63,7 +63,14 @@ public class WordNet{
         }
 
     }
+    public boolean isNoun(String word){
+        if (word == null){
+            throw new IllegealArgumentException();
+        }
+        return nountoid.containsKey(word);
+    }
     public Iterable<String> nouns(){
+        return nountoid.keySet();
          
 
     }
