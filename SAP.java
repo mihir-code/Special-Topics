@@ -7,9 +7,7 @@ import edu.princeton.cs.algs.StdOut;
 
 
 public class SAP{
-        private final Digraph G;
-        private Hashmap<Integer,Integer> store;
-        
+        private final Digraph G;        
 
     public SAP(Digraph G){
         this.G = G;
@@ -18,14 +16,45 @@ public class SAP{
     }
     
     public int length(int v, int w){
-        sap(v,w);
-
-
-
+        if (w = null){
+            throw new IllegalArgumentException();
+        }
+        int length = Integer.MAX_VALUE; // need a big number
+        BreadthFirstDirectedPaths pathv = new BreadthFirstDirectedPaths();
+        BreadthFirstDirectedPaths pathw = new BreadthFirstDirectedPaths();
+        for (int i = 0; i < g.V(); i++){
+            if (pathv.HasPathTo(i) && pathw.HasPathTo(i)){
+                int vw = pathv.distTo(i) + pathw.distTo(i);
+                if (vw < length){
+                    length = vw;
+                }
+            }
+            else{
+                return -1;
+            }
+        }
+        return length;
     }
 
     public int ancestor(int v, int w){
-
+        if (w = null){
+            throw new IllegalArgumentException();
+        }
+        int length = Integer.MAX_VALUE; // need a big number
+        BreadthFirstDirectedPaths pathv = new BreadthFirstDirectedPaths();
+        BreadthFirstDirectedPaths pathw = new BreadthFirstDirectedPaths();
+        for (int i = 0; i < g.V(); i++){
+            if (pathv.HasPathTo(i) && pathw.HasPathTo(i)){
+                int vw = pathv.distTo(i) + pathw.distTo(i);
+                if (vw < length){
+                    length = vw;
+                }
+            }
+            else{
+                return -1;
+            }
+        }
+        return length;
     }
 
     public int length(Iterable<Integer> v, Iterable<Integer> w){
