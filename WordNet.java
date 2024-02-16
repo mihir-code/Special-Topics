@@ -2,6 +2,7 @@ import edu.princeton.cs.algs4.BreadthFirstDirectedPaths;
 import edu.princeton.cs.algs4.in;
 import edu.prinecton.cs.algs4.SAP;
 import edu.princeton.cs.algs4.Digraph;
+import edu.princeton.cs.algs4.DirectedCycle;
 import edu.princeton.cs.algs4.Hashmap;
 
 
@@ -16,6 +17,21 @@ public class WordNet{
 
         idtosynsets = new Hashmap<Integer, String>(); // stores synsets
         nountoid = new Hashmap<String, Bag<Integer>>(); // stores nouns and related ids
+        int root = 0;
+        for(int i = 0; i < g.V(); i++){
+            if (g.outdegree(i) == 0){
+                root++;
+            }
+            else{
+                throw new IllegalArgumentException();
+            }
+        }
+
+        DirectedCycle hc = new DirectedCycle(g);
+        if (hc.hasCycle){
+            throw new IllegalArgumentException();
+        }
+        
 
     }
     private int Syn(String synsets){ // for reading the 
