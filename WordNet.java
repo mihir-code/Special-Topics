@@ -65,7 +65,7 @@ public class WordNet{
     }
     public boolean isNoun(String word){
         if (word == null){
-            throw new IllegealArgumentException();
+            throw new IllegalArgumentException();
         }
         return nountoid.containsKey(word);
     }
@@ -75,6 +75,7 @@ public class WordNet{
 
     }
     public distance(String nounA, String nounB){
+        length(nounA,nounB);
 
     }
     public String sap(String nounA, String nounB){
@@ -85,6 +86,7 @@ public class WordNet{
             else if (dis)
         }
 */
+        ancestor(nounA,nounB);
         
         
     }
