@@ -58,7 +58,6 @@ public class WordNet{
                     idtosynsets.put(n,syn);
                 }
             }
-            count++;
         }
         return count;
     }
