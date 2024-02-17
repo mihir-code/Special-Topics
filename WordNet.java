@@ -1,3 +1,7 @@
+/**
+ * @author Mihir Motukuri attests that this code is their original work and was written in compliance with the class Academic Integrity and Collaboration Policy found in the syllabus. 
+ */
+// Understanding
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.DirectedCycle;
@@ -72,10 +76,10 @@ public class WordNet{
         In in = new In(hypernyms);
         while (in.hasNextLine()){
             String line = in.readLine();
-            String[] parts = line.split(",");
-            int id = Integer.parseInt(parts[0]);
-            for(int i = 1; i < parts.length; i++){
-                int p = Integer.parseInt(parts[i]);
+            String[] part = line.split(",");
+            int id = Integer.parseInt(part[0]);
+            for(int i = 1; i < part.length; i++){
+                int p = Integer.parseInt(part[i]);
                 g.addEdge(id, p);
             }
         }
@@ -93,10 +97,10 @@ public class WordNet{
 
     }
     public int distance(String nounA, String nounB){
-        if (nountoid.containsKey(nounA)){
+        if (!nountoid.containsKey(nounA)){
             throw new IllegalArgumentException();
         }
-        if (nountoid.containsKey(nounB)){
+        if (!nountoid.containsKey(nounB)){
             throw new IllegalArgumentException();
         }
         Bag<Integer> nA = nountoid.get(nounA);
@@ -106,21 +110,17 @@ public class WordNet{
 
     }
     public String sap(String nounA, String nounB){
-        if (nountoid.containsKey(nounA)){
+        if (!nountoid.containsKey(nounA)){
             throw new IllegalArgumentException();
         }
-        if (nountoid.containsKey(nounB)){
+        if (!nountoid.containsKey(nounB)){
             throw new IllegalArgumentException();
         }
         Bag<Integer> nA = nountoid.get(nounA);
         Bag<Integer> nB = nountoid.get(nounB);
 
         int path = sap.ancestor(nA,nB);
-        String id = idtosynsets.get(path);
-
-        return id;
-        
-        
+        return idtosynsets.get(path); 
     }
     public static void main(String[] args){
         

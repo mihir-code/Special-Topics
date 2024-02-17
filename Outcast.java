@@ -1,3 +1,6 @@
+/**
+ * @author Mihir Motukuri attests that this code is their original work and was written in compliance with the class Academic Integrity and Collaboration Policy found in the syllabus. 
+ */
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
 
