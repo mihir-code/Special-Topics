@@ -1,30 +1,36 @@
-import edu.princeton.cs.algs4.WordNet;
+import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.StdOut;
 
 
 public class Outcast{
     private final WordNet wordnet;
     public Outcast(WordNet wordnet){
+        if(wordnet == null){
+            throw new IllegalArgumentException();
+        }
         this.wordnet = wordnet;
 
     }
     public String outcast(String[] nouns){
-        String out = noun[0];
-        int s = 0;
-        int sum = 0;
-        for(int i = 0; i< nouns.length; i++){
+        if(nouns == null){
+            throw new IllegalArgumentException();
+        }
+        int sum = -1;
+        String noun = " ";
+        for(int i = 0; i < nouns.length; i++){
+            int s = 0;
             for(int j = 0; j < nouns.length; j++){
-                if(!noun[i]==noun[j]){ 
-                    s += wordnet.distance(noun[i],noun[j]);
+                    s += wordnet.distance(nouns[i],nouns[j]);
+                if(s > sum){
+                    sum  = s;
+                    noun = nouns[i];
+
                 }
             }
-            if (sum < s){
-                s = sum;
-                out = noun[i];
-
-            }
         }
-        return out;
+        return noun;
     }
+
     public static void main (String[] args){
     WordNet wordnet = new WordNet(args[0], args[1]);
     Outcast outcast = new Outcast(wordnet);

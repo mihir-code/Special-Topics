@@ -6,26 +6,30 @@ import edu.princeton.cs.algs4.StdOut;
 
 
 public class SAP{
-        private final Digraph G;        
+        private final Digraph g;
+        private final int[] shortancestor;  
+  
 
     public SAP(Digraph G){
-        this.G = G;
-        
+        g = new Digraph(G);
+        if (g == null){
+            throw new IllegalArgumentException();
+        }
+        shortancestor = new int[1];
+        shortancestor[0] = -1;       
     }
 
     public int length(int v, int w){
-        if (w = null ||){
-            throw new IllegalArgumentException();
-        }
-
+        range(v);
+        range(w);
         int length = Integer.MAX_VALUE; // need a big number
         int ancestor = 0;
-        int shortancestor = 0;
-        BreadthFirstDirectedPaths pathv = new BreadthFirstDirectedPaths(G, v);
-        BreadthFirstDirectedPaths pathw = new BreadthFirstDirectedPaths(G, w);
-        for (int i = 0; i < G.V(); i++){
-            if (pathv.HasPathTo(i) && pathw.HasPathTo(i)){
-                int vw = pathv.distTo(i) + pathw.distTo(i);
+        int vw = 0;
+        BreadthFirstDirectedPaths pathv = new BreadthFirstDirectedPaths(g, v);
+        BreadthFirstDirectedPaths pathw = new BreadthFirstDirectedPaths(g, w);
+        for (int i = 0; i < g.V(); i++){
+            if (pathv.hasPathTo(i) && pathv.distTo(i) < length && pathw.hasPathTo(i) && pathw.distTo(i) < length){
+                vw = pathv.distTo(i) + pathw.distTo(i);
                 if (vw < length){
                     length = vw;
                     ancestor = i;
@@ -33,50 +37,81 @@ public class SAP{
             }
         }
         if (length == Integer.MAX_VALUE){
-            shortancestor = -1;
+            shortancestor[0] = -1;
             return -1;
         }
-        shortancestor = ancestor;
-        return distance;
+        shortancestor[0] = ancestor;
+        return length;
+
+        
     }
 
     public int ancestor(int v, int w){
-        if (w = null){
-            throw new IllegalArgumentException();
-        }
+        range(w);
+        range(v);
+
         length(v,w);
-        return shortancestor;
+        return shortancestor[0];
     }
 
     public int length(Iterable<Integer> v, Iterable<Integer> w){
         if(v == null || w == null){
             throw new IllegalArgumentException();
         }
-        range(v,w);
-        length(v, w);
-
+        verts(v);
+        verts(w);
+        int length = Integer.MAX_VALUE; // need a big number
+        int ancestor = 0;
+        int vw = 0;
+        BreadthFirstDirectedPaths pathv = new BreadthFirstDirectedPaths(g, v);
+        BreadthFirstDirectedPaths pathw = new BreadthFirstDirectedPaths(g, w);
+        for (int i = 0; i < g.V(); i++){
+            if (pathv.hasPathTo(i) && pathv.distTo(i) < length && pathw.hasPathTo(i) && pathw.distTo(i) < length){
+                vw = pathv.distTo(i) + pathw.distTo(i);
+                if (vw < length){
+                    length = vw;
+                    ancestor = i;
+                }
+            }
+        }
+        if (length == Integer.MAX_VALUE){
+            shortancestor[0] = -1;
+            return -1;
+        }
+        shortancestor[0] = ancestor;
+        return length;
+        
 
     }
     public int ancestor(Iterable<Integer> v, Iterable<Integer> w){
         if(v == null || w == null){
             throw new IllegalArgumentException();
         }
-        range(v,w);
+        verts(v);
+        verts(w);
         length(v,w);
-        return shortancestor;
+        return shortancestor[0];
 
         
 
     }
     private void range(int r){
-        int w = G.r();
-        if(r < 0 || 0 >= w){
+        int n = g.V();
+        if(r < 0 || r >= n){
             throw new IllegalArgumentException();
         }
       
     }
-    private void verts(Iterable<Integer> ints, int v){
-        int n = G.V();
+    private void verts(Iterable<Integer> vert){
+        if(vert == null){
+            throw new IllegalArgumentException();
+        }
+        int n = g.V();
+        for(int v: vert){
+            if (v < 0 || v >=n){
+                throw new IllegalArgumentException();
+        }
+        }
         
     }
     public static void main(String[] args) {
