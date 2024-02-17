@@ -9,14 +9,21 @@ public class Outcast{
     }
     public String outcast(String[] nouns){
         String out = noun[0];
-        int sum = Integer.MAX_VALUE;
-        for(int i = 1; i < nouns.length; i++){
-            s += wordnet.distance(noun[0],noun[i]);
+        int s = 0;
+        int sum = 0;
+        for(int i = 0; i< nouns.length; i++){
+            for(int j = 0; j < nouns.length; j++){
+                if(!noun[i]==noun[j]){ 
+                    s += wordnet.distance(noun[i],noun[j]);
+                }
+            }
             if (sum < s){
-                return sum;
+                s = sum;
+                out = noun[i];
+
             }
         }
-
+        return out;
     }
     public static void main (String[] args){
     WordNet wordnet = new WordNet(args[0], args[1]);

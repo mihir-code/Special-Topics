@@ -4,6 +4,7 @@ import edu.prinecton.cs.algs4.SAP;
 import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.DirectedCycle;
 import edu.princeton.cs.algs4.Hashmap;
+import edu.princeton.cs.alsg4.Bag;
 
 
 public class WordNet{
@@ -89,7 +90,7 @@ public class WordNet{
          
 
     }
-    public distance(String nounA, String nounB){
+    public int distance(String nounA, String nounB){
         length(nounA,nounB);
 
     }

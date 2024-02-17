@@ -1,8 +1,8 @@
 import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.BreadthFirstDirectedPaths;
 import edu.princeton.cs.algs4.In;
-import edu.princeton.cs.algs.StdIn;
-import edu.princeton.cs.algs.StdOut;
+import edu.princeton.cs.algs4.StdIn;
+import edu.princeton.cs.algs4.StdOut;
 
 
 public class SAP{
@@ -11,20 +11,19 @@ public class SAP{
     public SAP(Digraph G){
         this.G = G;
         
-      
     }
-    
+
     public int length(int v, int w){
-        if (w = null){
+        if (w = null ||){
             throw new IllegalArgumentException();
         }
-        range(v,w);
 
         int length = Integer.MAX_VALUE; // need a big number
         int ancestor = 0;
+        int shortancestor = 0;
         BreadthFirstDirectedPaths pathv = new BreadthFirstDirectedPaths(G, v);
         BreadthFirstDirectedPaths pathw = new BreadthFirstDirectedPaths(G, w);
-        for (int i = 0; i < g.V(); i++){
+        for (int i = 0; i < G.V(); i++){
             if (pathv.HasPathTo(i) && pathw.HasPathTo(i)){
                 int vw = pathv.distTo(i) + pathw.distTo(i);
                 if (vw < length){
@@ -45,7 +44,6 @@ public class SAP{
         if (w = null){
             throw new IllegalArgumentException();
         }
-        range(v,w);
         length(v,w);
         return shortancestor;
     }
@@ -72,10 +70,14 @@ public class SAP{
     }
     private void range(int r){
         int w = G.r();
-        if(r < 0 || o >= w){
+        if(r < 0 || 0 >= w){
             throw new IllegalArgumentException();
         }
       
+    }
+    private void verts(Iterable<Integer> ints, int v){
+        int n = G.V();
+        
     }
     public static void main(String[] args) {
         In in = new In(args[0]);
