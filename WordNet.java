@@ -1,7 +1,11 @@
 /**
  * @author Mihir Motukuri attests that this code is their original work and was written in compliance with the class Academic Integrity and Collaboration Policy found in the syllabus. 
  */
-// Understanding
+// Making sure that I got all the base cases was really hard.
+// I had to review the guidelines over and over again as the one I forgot about was the outdegree one.
+// It also took me a really long time to realize that my root checker was checking the condition immediately, messing up the code.
+// After realizing this mistake, it counts the roots first and then throws the exception.
+
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.DirectedCycle;
@@ -23,23 +27,25 @@ public class WordNet{
 
         int s = Syn(synsets);
         g = new Digraph(s);
-        sap = new SAP(g);
         Hyp(hypernyms);
 
         int root = 0;
         for(int i = 0; i < s; i++){
             if (g.outdegree(i) == 0){
                 root++;
-            }
-        if(root !=1){
+            if(root !=1){
                 throw new IllegalArgumentException();
             }
         }
+    }
 
-        DirectedCycle hc = new DirectedCycle(g);
+       DirectedCycle hc = new DirectedCycle(g);
         if (hc.hasCycle()){
             throw new IllegalArgumentException();
         }
+        sap = new SAP(g);
+        
+
     }
     private int Syn(String synsets){ // for reading the 
         if (synsets == null){
