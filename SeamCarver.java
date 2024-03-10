@@ -5,7 +5,7 @@ import java.lang.Math;
 
 public class SeamCarver{
     private Picture picture;
-    private double[][] energy;
+    private double[][] e;
     
     
     public SeamCarver(Picture picture){
@@ -42,11 +42,14 @@ public class SeamCarver{
          return this.e[x][y] = pixel;    
 
     }
-    public int[] findHorizontalSeam(){
-        
-    }
     public int[] findVerticalSeam(){
 
+    }
+    public int[] removeVerticalSeam(int[] seam){
+
+    }
+    public int[] findHorizontalSeam(){
+        
     }
     public void removeHorizontalSeam(int[] seam){
         
@@ -64,7 +67,7 @@ public class SeamCarver{
     private boolean Border(int x, int y){
         return x == 0 || x == this.width() -1 || y == 0 || y == this.height() -1;
     }
-
+// combine them into one
     private int Xrgb(int x, int y){
         int left = this.picture.getRBG(x - 1,y);
         int right = this.picture.getRBG(x + 1, y);
