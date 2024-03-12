@@ -19,11 +19,11 @@ public class SeamCarver{
 
     }
     public int width(){
-        return picture.width;
+        return picture.width();
 
     }
     public int height(){
-        return picture.height;
+        return picture.height();
 
     }
     public double energy(int x, int y){
@@ -43,7 +43,12 @@ public class SeamCarver{
 
     }
     public int[] findVerticalSeam(){
+        int[] edgeTo = new int[size + 1]; // not sure about this
+        int[] distTo = new double[size + 1]; // not sure about this
 
+        for (int i = 0; i <this.size + 1; i++){
+
+        }
     }
     public int[] removeVerticalSeam(int[] seam){
 
