@@ -43,8 +43,8 @@ public class SeamCarver{
 
     }
     public int[] findVerticalSeam(){
-        int h = energy.length;
-        int w = energy[0].length;
+        /*int h = energy.length;
+        int w = energy[0].length; */
         int[][] edgeTo = new int[h][w]; 
         double[][] distTo = new double[h][w]; 
 
@@ -52,24 +52,52 @@ public class SeamCarver{
             distTo[i] = Double.POSITIVE_INFINITY;
         }
 
-        for (int row = 0; row < height(); row++) {
+        for (int row = 0; row < height() -1; row++) {
             for (int col = 0; col < width(); col++) {
-                if(distTo[i] > distTo[i-1]){
-
-                }
-                }
-                // make three if statements that checks for the energy below, to the right, and the left.
-                
+               relax(col, row, distTo, edgeTo);
+                }                                
             }
-        }
+            return up(edgeTo,lastrowmin(distTo));
     }
     private void relax(int x, int y, double[][] distTo, int[][] edgeTo){
-        for (int i = -1, i < 2; i++){
-            int n = v + i;
+        for (int i = -1; i < 2; i++){ // only checks the three for bottom, left, right
+            int n = x + i;
             if (n >=0 && n <width() && distTo[y][x] + energy(x, y) < distTo[y+1][n]){
                 edgeTo[y+1][n] = x;
                 distTo[y+1][n] = distTo[y][x] + energy(x, y);
             }
+        }
+    }
+    private int[] path(int[][] edgeTo, int p){
+        int[] path = new int[height()];
+        for (int i = height() - 1; i >= 0; i++){
+            path[i] = p;
+            p = edgeTo[i][p];
+        }
+        return path;
+    }
+    private int lastrowmin(double[][] a){
+        if (height() == 0){
+            throw new IllegalArgumentException();
+        }
+        int p = 0;
+        for (int i = 1; i < width(); i++){
+            if (a[height() -1][i] < a[height()-1][p]){
+                p = i;
+            }
+        }
+        return p;
+    }
+    private void transpose(){
+        Picture temp = new Picture(height(), width());
+        double[][] temp1 = new double[width()][height()];
+        for(int row = 0; row< width(); row++){
+            for(int col = 0; col < height(); col++){
+                temp.setRGB(row,col,picture.getRGB(row,col));
+                temp1[i][j] = e[col][row];
+            } 
+            picture = temp;
+            e = temp1;
         }
     }
     public int[] removeVerticalSeam(int[] seam){
@@ -83,7 +111,10 @@ public class SeamCarver{
 
     }
     public int[] findHorizontalSeam(){
-        
+        transpose();
+        int[] p = findVerticalSeam();
+        transpoe();
+        return p; 
     }
     public void removeHorizontalSeam(int[] seam){
         if (seam == null){
