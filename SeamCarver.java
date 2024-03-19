@@ -107,7 +107,17 @@ public class SeamCarver{
         if (width <= 1 || seam.length !=height){
             throw new IllegalArgumentException();
         }
-    
+        Picture t = new Picture(width() - 1, height());
+        for (int col= 0; col < height(); col++){
+            for (int row = 0; row < seam[j]; row++){
+                t.setRGB(row, col, picture.getRBG(row + 1, col));
+            }
+            for (int row = seam[col]; row < width() - 1; row++){
+                t.setRGB(row,col,picture.getRBG(row + 1, col));
+            }
+        }
+        this.picture = t;
+        energyr();
 
     }
     public int[] findHorizontalSeam(){
@@ -124,6 +134,14 @@ public class SeamCarver{
             throw new IllegalArgumentException();
         }
         
+    }
+    private void energyr(){
+        this.e = new double[height()][width()];
+        for (int row = 0; row < width(); row++){
+            for (int col = 0; col < height(); height++){
+                e[col][row] = -1; // following this order since I did horizontal last. Doesn't really matter. Just remember in the future.
+            }
+        }
     }
     private int compRed(int color){
         return (color >> 16) & 0xFF;
