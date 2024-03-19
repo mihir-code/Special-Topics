@@ -43,10 +43,8 @@ public class SeamCarver{
 
     }
     public int[] findVerticalSeam(){
-        /*int h = energy.length;
-        int w = energy[0].length; */
-        int[][] edgeTo = new int[h][w]; 
-        double[][] distTo = new double[h][w]; 
+        int[][] edgeTo = new int[height()][width()]; 
+        double[][] distTo = new double[height()][width()]; 
 
         for (int i = 0; i <distTo.length + 1; i++){
             distTo[i] = Double.POSITIVE_INFINITY;
@@ -159,20 +157,20 @@ public class SeamCarver{
     private boolean Border(int x, int y){
         return x == 0 || x == this.width() -1 || y == 0 || y == this.height() -1;
     }
-    private int rgb(int x, int y){
+    private double rgb(int x, int y){
         int left = this.picture.getRBG(x - 1,y);
         int right = this.picture.getRBG(x + 1, y);
 
         int bottom = this.picture.getRBG(x , y - 1);
         int top = this.picture.getRBG(x, y + 1);
 
-        int Xred = Math.abs(compRed(right)-compRed(left));
-        int Xgreen = Math.abs(compGreen(right)-compGreen(left));
-        int Xblue = Math.abs(compBlue(right)-compBlue(left)); 
+        double Xred = Math.abs(compRed(right)-compRed(left));
+        double Xgreen = Math.abs(compGreen(right)-compGreen(left));
+        double Xblue = Math.abs(compBlue(right)-compBlue(left)); 
         
-        int Yred = Math.abs(compRed(top)-compRed(botton));
-        int Ygreen = Math.abs(compGreen(top)-compGreen(bottom));
-        int Yblue = Math.abs(compBlue(top)-compBlue(bottom)); 
+        double Yred = Math.abs(compRed(top)-compRed(botton));
+        double Ygreen = Math.abs(compGreen(top)-compGreen(bottom));
+        double Yblue = Math.abs(compBlue(top)-compBlue(bottom)); 
 
         return Xred * Xred + Xgreen * Xgreen + Xblue * Xblue +Yred * Yred + Ygreen * Ygreen + Yblue * Yblue;
     }
