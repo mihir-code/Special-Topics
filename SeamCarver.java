@@ -133,6 +133,9 @@ public class SeamCarver{
         if (width <= 1 || seam.length !=height){
             throw new IllegalArgumentException();
         }
+        transpose();
+        removeVerticalSeam(seam);
+        tranpose();
         
     }
     private void energyr(){
