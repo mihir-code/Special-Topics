@@ -33,7 +33,7 @@ public class SeamCarver{
         if (y < 0 || y >= height()){
             throw new IllegalArgumentException();
         }
-        double e = this.energy[x][y];
+        double e = this.e[x][y];
 
         if (Border(x,y)){
             return this.e[x][y] = 1000;    
@@ -46,8 +46,8 @@ public class SeamCarver{
         int[][] edgeTo = new int[height()][width()]; 
         double[][] distTo = new double[height()][width()]; 
 
-        for (int i = 0; i <distTo.length + 1; i++){
-            distTo[i] = Double.POSITIVE_INFINITY;
+        for (int i = 0; i < distTo.length + 1; i++){
+            distTo[i][j] = Double.POSITIVE_INFINITY;
         }
 
         for (int row = 0; row < height() -1; row++) {
@@ -55,7 +55,7 @@ public class SeamCarver{
                relax(col, row, distTo, edgeTo);
                 }                                
             }
-            return up(edgeTo,lastrowmin(distTo));
+            return path(edgeTo,lastrowmin(distTo));
     }
     private void relax(int x, int y, double[][] distTo, int[][] edgeTo){
         for (int i = -1; i < 2; i++){ // only checks the three for bottom, left, right
@@ -68,7 +68,7 @@ public class SeamCarver{
     }
     private int[] path(int[][] edgeTo, int p){
         int[] path = new int[height()];
-        for (int i = height() - 1; i >= 0; i++){
+        for (int i = height() - 1; i >= 0; i--){
             path[i] = p;
             p = edgeTo[i][p];
         }
@@ -86,7 +86,7 @@ public class SeamCarver{
         }
         return p;
     }
-    private void transpose(){
+    private void transpose(){ 
         Picture temp = new Picture(height(), width());
         double[][] temp1 = new double[width()][height()];
         for(int row = 0; row< width(); row++){
@@ -102,12 +102,12 @@ public class SeamCarver{
         if (seam == null){
             throw new IllegalArgumentException();
         }
-        if (width <= 1 || seam.length !=height){
+        if (width() <= 1 || seam.length !=height()){
             throw new IllegalArgumentException();
         }
         Picture t = new Picture(width() - 1, height());
         for (int col= 0; col < height(); col++){
-            for (int row = 0; row < seam[j]; row++){
+            for (int row = 0; row < seam[col]; row++){
                 t.setRGB(row, col, picture.getRBG(row + 1, col));
             }
             for (int row = seam[col]; row < width() - 1; row++){
@@ -121,25 +121,19 @@ public class SeamCarver{
     public int[] findHorizontalSeam(){
         transpose();
         int[] p = findVerticalSeam();
-        transpoe();
+        transpose();
         return p; 
     }
     public void removeHorizontalSeam(int[] seam){
-        if (seam == null){
-            throw new IllegalArgumentException();
-        }
-        if (width <= 1 || seam.length !=height){
-            throw new IllegalArgumentException();
-        }
         transpose();
         removeVerticalSeam(seam);
-        tranpose();
+        transpose();
         
     }
     private void energyr(){
         this.e = new double[height()][width()];
         for (int row = 0; row < width(); row++){
-            for (int col = 0; col < height(); height++){
+            for (int col = 0; col < height(); col++){
                 e[col][row] = -1; // following this order since I did horizontal last. Doesn't really matter. Just remember in the future.
             }
         }
