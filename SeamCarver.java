@@ -43,18 +43,32 @@ public class SeamCarver{
 
     }
     public int[] findVerticalSeam(){
-        int[][] edgeTo = new int[height()][width()]; 
-        double[][] distTo = new double[height()][width()]; 
-        int num;
-        for (int i = 0; i <e.length + 1; i++){
+        int h = energy.length;
+        int w = energy[0].length;
+        int[][] edgeTo = new int[h][w]; 
+        double[][] distTo = new double[h][w]; 
+
+        for (int i = 0; i <distTo.length + 1; i++){
             distTo[i] = Double.POSITIVE_INFINITY;
-            distTo[0] = 0.0;
         }
 
         for (int row = 0; row < height(); row++) {
             for (int col = 0; col < width(); col++) {
+                if(distTo[i] > distTo[i-1]){
+
+                }
+                }
                 // make three if statements that checks for the energy below, to the right, and the left.
                 
+            }
+        }
+    }
+    private void relax(int x, int y, double[][] distTo, int[][] edgeTo){
+        for (int i = -1, i < 2; i++){
+            int n = v + i;
+            if (n >=0 && n <width() && distTo[y][x] + energy(x, y) < distTo[y+1][n]){
+                edgeTo[y+1][n] = x;
+                distTo[y+1][n] = distTo[y][x] + energy(x, y);
             }
         }
     }
@@ -62,6 +76,10 @@ public class SeamCarver{
         if (seam == null){
             throw new IllegalArgumentException();
         }
+        if (width <= 1 || seam.length !=height){
+            throw new IllegalArgumentException();
+        }
+    
 
     }
     public int[] findHorizontalSeam(){
@@ -69,6 +87,9 @@ public class SeamCarver{
     }
     public void removeHorizontalSeam(int[] seam){
         if (seam == null){
+            throw new IllegalArgumentException();
+        }
+        if (width <= 1 || seam.length !=height){
             throw new IllegalArgumentException();
         }
         
