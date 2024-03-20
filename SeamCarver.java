@@ -1,7 +1,6 @@
 import edu.princeton.cs.algs4.Picture;
 import java.awt.Color;
 import java.lang.Math;
-import edu.princeton.cs.algs4.Topological;
 
 public class SeamCarver{
     private Picture picture;
@@ -9,13 +8,15 @@ public class SeamCarver{
     
     
     public SeamCarver(Picture picture){
+        if(picture ==  null){
+            throw new IllegalArgumentException();
+        }
         this.picture = new Picture(picture);
+        energyr();
 
     }
     public Picture picture(){
-        if(picture == null){
-            return null;
-        }
+        return new Picture(picture);
 
     }
     public int width(){
@@ -33,34 +34,37 @@ public class SeamCarver{
         if (y < 0 || y >= height()){
             throw new IllegalArgumentException();
         }
-        double e = this.e[x][y];
+        if(e[y][x] >= 0){
+            return e[y][x];
+        }
 
         if (Border(x,y)){
-            return this.e[x][y] = 1000;    
+            return e[x][y] = 1000;    
         }
          double pixel = Math.sqrt(rgb(x, y));
-         return this.e[x][y] = pixel;    
+         return e[x][y] = pixel;    
 
     }
     public int[] findVerticalSeam(){
-        int[][] edgeTo = new int[height()][width()]; 
         double[][] distTo = new double[height()][width()]; 
-
-        for (int i = 0; i < distTo.length + 1; i++){
-            distTo[i][j] = Double.POSITIVE_INFINITY;
-        }
-
-        for (int row = 0; row < height() -1; row++) {
+        
+        for (int row = 1; row < height(); row++) { //ignoring the first row.
             for (int col = 0; col < width(); col++) {
-               relax(col, row, distTo, edgeTo);
-                }                                
+                distTo[row][col] = Double.POSITIVE_INFINITY;
+                }                                 
             }
-            return path(edgeTo,lastrowmin(distTo));
+            int[][] edgeTo = new int[height()][width()];
+        for (int col = 0; col < height() -1; col++){
+            for(int row = 0; row < width(); row++){
+                relax(row, col, distTo, edgeTo);
+            }
+        }
+        return path(edgeTo, lastrowmin(distTo));
     }
     private void relax(int x, int y, double[][] distTo, int[][] edgeTo){
         for (int i = -1; i < 2; i++){ // only checks the three for bottom, left, right
             int n = x + i;
-            if (n >=0 && n <width() && distTo[y][x] + energy(x, y) < distTo[y+1][n]){
+            if (n >= 0 && n < width() && distTo[y][x] + energy(x, y) < distTo[y + 1][n]){
                 edgeTo[y+1][n] = x;
                 distTo[y+1][n] = distTo[y][x] + energy(x, y);
             }
@@ -79,9 +83,9 @@ public class SeamCarver{
             throw new IllegalArgumentException();
         }
         int p = 0;
-        for (int i = 1; i < width(); i++){
-            if (a[height() -1][i] < a[height()-1][p]){
-                p = i;
+        for (int row = 1; row < width(); row++){
+            if (a[height() -1][row] < a[height()-1][p]){
+                p = row;
             }
         }
         return p;
@@ -92,26 +96,33 @@ public class SeamCarver{
         for(int row = 0; row< width(); row++){
             for(int col = 0; col < height(); col++){
                 temp.setRGB(row,col,picture.getRGB(row,col));
-                temp1[i][j] = e[col][row];
+                temp1[row][col] = e[col][row];
             } 
             picture = temp;
             e = temp1;
         }
     }
-    public int[] removeVerticalSeam(int[] seam){
-        if (seam == null){
+    public void removeVerticalSeam(int[] seam){
+        if (seam == null || seam.length != height()){
             throw new IllegalArgumentException();
         }
-        if (width() <= 1 || seam.length !=height()){
+        for (int i = 0; i < height(); i++){
+            if (seam[i] >= width() || seam[i] >0){
+                throw new IllegalArgumentException();
+            }
+            if (i > 0 && Math.abs(seam[i] - seam[i-1])> 1){
+                throw new IllegalArgumentException();            }
+        }
+        if (width() <= 1){
             throw new IllegalArgumentException();
         }
         Picture t = new Picture(width() - 1, height());
         for (int col= 0; col < height(); col++){
             for (int row = 0; row < seam[col]; row++){
-                t.setRGB(row, col, picture.getRBG(row + 1, col));
+                t.setRGB(row, col, picture.getRGB(row, col)); 
             }
             for (int row = seam[col]; row < width() - 1; row++){
-                t.setRGB(row,col,picture.getRBG(row + 1, col));
+                t.setRGB(row, col, picture.getRGB(row + 1, col));
             }
         }
         this.picture = t;
@@ -120,9 +131,9 @@ public class SeamCarver{
     }
     public int[] findHorizontalSeam(){
         transpose();
-        int[] p = findVerticalSeam();
+        int[] path = findVerticalSeam();
         transpose();
-        return p; 
+        return path; 
     }
     public void removeHorizontalSeam(int[] seam){
         transpose();
@@ -138,35 +149,9 @@ public class SeamCarver{
             }
         }
     }
-    private int compRed(int color){
-        return (color >> 16) & 0xFF;
-    }
-    private int compBlue(int color){
-        return (color) & 0xFF;
-    }
-    private int compGreen(int color){
-        return (color >> 8) & 0xFF;
-    }
 
     private boolean Border(int x, int y){
-        return x == 0 || x == this.width() -1 || y == 0 || y == this.height() -1;
-    }
-    private double rgb(int x, int y){
-        int left = this.picture.getRBG(x - 1,y);
-        int right = this.picture.getRBG(x + 1, y);
-
-        int bottom = this.picture.getRBG(x , y - 1);
-        int top = this.picture.getRBG(x, y + 1);
-
-        double Xred = Math.abs(compRed(right)-compRed(left));
-        double Xgreen = Math.abs(compGreen(right)-compGreen(left));
-        double Xblue = Math.abs(compBlue(right)-compBlue(left)); 
-        
-        double Yred = Math.abs(compRed(top)-compRed(botton));
-        double Ygreen = Math.abs(compGreen(top)-compGreen(bottom));
-        double Yblue = Math.abs(compBlue(top)-compBlue(bottom)); 
-
-        return Xred * Xred + Xgreen * Xgreen + Xblue * Xblue +Yred * Yred + Ygreen * Ygreen + Yblue * Yblue;
+        return x == 0 || x == this.width() - 1 || y == 0 || y == this.height() - 1;
     }
 
     
