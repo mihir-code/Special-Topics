@@ -1,3 +1,12 @@
+/**
+ * @author  Mihir Motukuri attests that this code is their original work and was written in compliance with the class Academic Integrity and Collaboration Policy found in the syllabus. 
+ */
+// It took me a very long time to understand how to make my findVerticalSeam method. Even after talking with Matt, I felt like I understood the concept but didn't know how to code it.
+// But after rewatching the Coursera videos over, I realized that I could just make my own helper method, similar to how they did it.
+// Even after debugging for sooo long, my catch for int x in the energy method was if it was less than the height, not the width. It made me go from a 56 to a 100.
+// The transpose method was hard to implement as I understood that the height and width have to switch. Later on, I then undetstood that the pixels also needed to be swapped.
+// Honestly, my implementation for transpose method reminds me of AP CS with the temp variables.
+
 import edu.princeton.cs.algs4.Picture;
 import java.util.NoSuchElementException;
 import java.lang.Math;
@@ -13,7 +22,7 @@ public class SeamCarver{
             throw new IllegalArgumentException();
         }
         this.picture = new Picture(picture);
-        e = new double[picture.height()][picture.width()];
+        this.e = new double[picture.height()][picture.width()]; // Remember to add this.e
         energyr();
 
     }
@@ -30,7 +39,7 @@ public class SeamCarver{
 
     }
     public double energy(int x, int y){
-        if (x < 0 || x >= height()){
+        if (x < 0 || x >= width()){
             throw new IllegalArgumentException();
         }
         if (y < 0 || y >= height()){
@@ -101,7 +110,8 @@ public class SeamCarver{
     private void transpose(){ 
         Picture temp = new Picture(height(), width());
         double[][] temp1 = new double[width()][height()];
-        for(int row = 0; row< width(); row++){
+
+        for(int row = 0; row < width(); row++){
             for(int col = 0; col < height(); col++){
                 temp.setRGB(col, row, picture.getRGB(row,col));
                 temp1[row][col] = e[col][row];
@@ -142,10 +152,10 @@ public class SeamCarver{
         transpose();
         int[] path = findVerticalSeam();
         transpose();
-        return path; 
+        return path; // All I have to do since I already have it set up for Vertical
     }
     public void removeHorizontalSeam(int[] seam){
-        transpose();
+        transpose(); // All I have to do since I already have it set up for Vertical
         removeVerticalSeam(seam);
         transpose();
         
@@ -154,11 +164,10 @@ public class SeamCarver{
         this.e = new double[height()][width()];
         for (int row = 0; row < width(); row++){
             for (int col = 0; col < height(); col++){
-                e[col][row] = -1.0; // following this order since I did horizontal last. Doesn't really matter. Just remember in the future.
+                e[col][row] = -1.0; // Doesn't really matter. Just remember in the future.
             }
         }
     }
-
     private boolean Border(int x, int y){
         return x == 0 || x == width() - 1 || y == 0 || y == height() - 1;
     }
