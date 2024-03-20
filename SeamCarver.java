@@ -3,6 +3,10 @@
  */
 // It took me a very long time to understand how to make my findVerticalSeam method. Even after talking with Matt, I felt like I understood the concept but didn't know how to code it.
 // But after rewatching the Coursera videos over, I realized that I could just make my own helper method, similar to how they did it.
+// I go through each row and and check the pixels below and next to a pixel and then "relax" the edges updating the shortest edges. 
+// Now we can go back up with the lowest energy total at the bottom to the top using the handy helper method.
+
+
 // Even after debugging for sooo long, my catch for int x in the energy method was if it was less than the height, not the width. It made me go from a 56 to a 100.
 // The transpose method was hard to implement as I understood that the height and width have to switch. Later on, I then undetstood that the pixels also needed to be swapped.
 // Honestly, my implementation for transpose method reminds me of AP CS with the temp variables.
@@ -76,11 +80,11 @@ public class SeamCarver{
                 relax(row, col, distTo, edgeTo);
             }
         }
-        return path(edgeTo, lastrowmin(distTo));
+        return path(edgeTo, lastrow(distTo));
     }
     private void relax(int x, int y, double[][] distTo, int[][] edgeTo){
-        for (int i = -1; i < 2; i++){ // only checks the three for bottom, left, right
-            int n = x + i;
+        for (int row = -1; row < 2; row++){ // only checks the three for bottom, left, right
+            int n = x + row;
             if (n >= 0 && n < width() && distTo[y][x] + energy(x, y) < distTo[y + 1][n]){
                 edgeTo[y+1][n] = x;
                 distTo[y+1][n] = distTo[y][x] + energy(x, y);
@@ -89,13 +93,13 @@ public class SeamCarver{
     }
     private int[] path(int[][] edgeTo, int p){
         int[] path = new int[height()];
-        for (int i = height() - 1; i >= 0; i--){
-            path[i] = p;
-            p = edgeTo[i][p];
+        for (int col = height() - 1; col >= 0; col--){
+            path[col] = p;
+            p = edgeTo[col][p];
         }
         return path;
     }
-    private int lastrowmin(double[][] a){
+    private int lastrow(double[][] a){
         if (height() == 0){
             throw new NoSuchElementException();
         }
