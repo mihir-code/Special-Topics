@@ -12,7 +12,7 @@ import java.util.HashMap;
 public class BaseballElimination{
     private int[] victories;
     private int[] gamesremaning;
-    private int[] losses;
+    private int[] loss;
     private int[][] opponents;
     private int numbofteams;
     private ArrayList<String> actteams;
@@ -22,9 +22,9 @@ public BaseballElimination(String filename){
     In input = new In(filename);
     for (int i = 0; i < numbofteams; i++){
         actteams.add(input.readString());
-        gamesremaning[i]= input.readInt();
-        victories[i]= input.readInt();
-        losses[i]= input.readInt();
+        gamesremaning[i] = input.readInt();
+        victories[i] = input.readInt();
+        loss[i] = input.readInt();
         for (int opp = 0; i < numbofteams; i++){
             opponents[i][j] = input.readInt();
         }
@@ -48,7 +48,7 @@ public int wins(String team){
 
 public int losses(String team){
     int t = getTeam(team);
-    return losses[t];
+    return loss[t];
 }
 
 public int remaining(String team){
@@ -63,7 +63,18 @@ public int against(String team1, String team2){
 }
 
 public boolean isEliminated(String team){
-
+    ArrayList<String> result = new ArrayList<>();
+    int t = getTeam(team);
+    int verts = ((numbofteams -2) *(numbofteams *2)+ numbofteams -2) / 2;
+    int winratio = victories[t] + gamesremaning[t];
+    
+    // easy check
+    for (int v = 0; v < numbofteams; v++){
+        if (winratio - victories[v] < 0){ // mathematically impossible
+             return result.add(actteams.get(v));
+                
+        }
+    }
 }
 
 public Iterable<String> certificateOfElimination(String Team){
