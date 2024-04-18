@@ -6,6 +6,7 @@ import edu.princeton.cs.algs4.FlowEdge;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 
@@ -16,6 +17,10 @@ public class BaseballElimination{
     private int[][] opponents;
     private int numbofteams;
     private ArrayList<String> actteams;
+    private List<String> Cut;
+    private final int numb;
+    private final HashMap<String,Integer> map;
+    
 
 
 public BaseballElimination(String filename){
@@ -30,6 +35,7 @@ public BaseballElimination(String filename){
         }
 
     }
+    
 }
 
 public int numberofTeams(){
