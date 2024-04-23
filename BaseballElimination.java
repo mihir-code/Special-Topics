@@ -17,9 +17,9 @@ public class BaseballElimination{
     private int[][] opponents;
     private int numbofteams;
     private ArrayList<String> actteams;
-    private List<String> Cut;
+    private List<String> cut;
     private final int numb;
-    private final HashMap<String,Integer> map;
+    private final HashMap<String,Integer> mapping;
     
 
 
@@ -69,7 +69,36 @@ public int against(String team1, String team2){
 }
 
 public boolean isEliminated(String team){
-    ArrayList<String> result = new ArrayList<>();
+    if (team == null){
+        throw new IllegalArgumentException();
+    }
+    if(!this.mapping.containsKey(team)){
+        throw new IllegalArgumentException();
+    }
+    this.cut = new ArrayList<>();
+    if(!cut.isEmpty()){
+        return true;
+    }
+    int verts = numb - 1;
+    int games = ((n-1) *(n-2)) /2;
+    int total = 2 + verts + games;
+    HashMap<Integer,String> corteam = new HashMap<>();
+
+
+
+    int maximumwins = this.wins(team) + this.remaining(team);
+    for (String game : this.teams()){
+        if(this.wins(game) > maximumwins){
+            cut.add(game);
+        }
+    }
+
+    
+    
+    
+    
+    
+    /*ArrayList<String> result = new ArrayList<>();
     int t = getTeam(team);
     int verts = ((numbofteams -2) *(numbofteams *2)+ numbofteams -2) / 2;
     int winratio = victories[t] + gamesremaning[t];
@@ -81,6 +110,7 @@ public boolean isEliminated(String team){
                 
         }
     }
+    */
 }
 
 public Iterable<String> certificateOfElimination(String Team){
