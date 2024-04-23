@@ -83,7 +83,19 @@ public boolean isEliminated(String team){
     int games = ((n-1) *(n-2)) /2;
     int total = 2 + verts + games;
     HashMap<Integer,String> corteam = new HashMap<>();
-
+    HashMap<Integer,List<Integer>> gameperteam = new HashMap<>();
+    int start = 1;
+    for(String game: this.teams()){
+        if(!game.equals(team)){
+            corteam(i,t);
+            start+=1;
+        }
+    }
+    for (int i = 1; 1 <= verts; i++){
+        for(int j = i + 1; j <= verts; j++){
+            
+        }
+    }
 
 
     int maximumwins = this.wins(team) + this.remaining(team);
