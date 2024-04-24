@@ -1,12 +1,11 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.FordFulkerson;
 import edu.princeton.cs.algs4.FlowNetwork;
 import edu.princeton.cs.algs4.FlowEdge;
-
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 
 public class BaseballElimination{
@@ -34,14 +33,14 @@ public BaseballElimination(String filename){
     this.remaining = new int[numb];
     this.opponents = new int [numb][numb];
     for (int n = 0; n < numb; n++){
-        String teams = input.readString();
-        actteams.add(teams);
+        String team = input.readString();
+        actteams.add(team);
         remaining[n] = input.readInt();
         wins[n] = input.readInt();
         losses[n] = input.readInt();
-        mapping.put(teams, n);
-        for (int opp = 0; opp < numb; opp++){
-            opponents[n][opp] = input.readInt();
+        mapping.put(team, n);
+        for (int j = 0; j < numb; j++){
+            opponents[n][j] = input.readInt();
         }
 
     }
@@ -52,7 +51,6 @@ public int numberOfTeams(){
     return numb;
 
 }
-
 public Iterable<String> teams(){ 
     return actteams;
 }
@@ -106,7 +104,7 @@ public boolean isEliminated(String team){
     for(String game: this.teams()){
         if(!game.equals(team)){
             corteam.put(source,game);
-            ++source; // This looks cooler than the other way
+            source=+1; // This looks cooler than the other way
         }
     }
     for (int i = 1; i <= verts - 1; i++){
@@ -115,7 +113,7 @@ public boolean isEliminated(String team){
             tracker.add(i);
             tracker.add(j);
             gameperteam.put(source,tracker);
-            ++source;
+            source=+1;
         }
     }
 
@@ -128,8 +126,8 @@ public boolean isEliminated(String team){
         FlowEdge edge = new FlowEdge(0, i, cap);
         flow.addEdge(edge);
         FlowEdge edge1 = new FlowEdge(i,vert,Double.POSITIVE_INFINITY);
-        flow.addEdge(edge1);
         FlowEdge edge2 = new FlowEdge(i,vert1,Double.POSITIVE_INFINITY);
+        flow.addEdge(edge1);
         flow.addEdge(edge2);
     }
 
@@ -178,17 +176,3 @@ private void checker(String team){
     }
 }
 }
-
-/*ArrayList<String> result = new ArrayList<>();
-    int t = getTeam(team);
-    int verts = ((numbofteams -2) *(numbofteams *2)+ numbofteams -2) / 2;
-    int winratio = victories[t] + gamesremaning[t];
-    
-    // easy check
-    for (int v = 0; v < numbofteams; v++){
-        if (winratio - victories[v] < 0){ // mathematically impossible
-             return result.add(actteams.get(v));
-                
-        }
-    }
-    */
