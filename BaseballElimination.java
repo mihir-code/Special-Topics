@@ -1,19 +1,17 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.FordFulkerson;
 import edu.princeton.cs.algs4.FlowNetwork;
 import edu.princeton.cs.algs4.FlowEdge;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Collections;
-// import java.util.Maps;
 
 
 public class BaseballElimination{
     private final int[] wins;
-    private final int[] remaning;
+    private final int[] remaining;
     private final int[] losses;
     private final int[][] opponents;
    // private int numbofteams;
@@ -31,20 +29,20 @@ public BaseballElimination(String filename){
     In input = new In(filename);
     this.numb = input.readInt();
     this.actteams = new ArrayList<>();
+    this.mapping = new HashMap<>();
     this.wins = new int[numb];
     this.losses = new int[numb];
-    this.remaning = new int[numb];
-    this.mapping = new HashMap<>();
+    this.remaining = new int[numb];
     this.opponents = new int [numb][numb];
-    for (int i = 0; i < numb; i++){
+    for (int n = 0; n < numb; n++){
         String teams = input.readString();
         actteams.add(teams);
-        remaning[i] = input.readInt();
-        wins[i] = input.readInt();
-        losses[i] = input.readInt();
-        mapping.put(teams, i);
+        remaining[n] = input.readInt();
+        wins[n] = input.readInt();
+        losses[n] = input.readInt();
+        mapping.put(teams, n);
         for (int opp = 0; opp < numb; opp++){
-            opponents[i][opp] = input.readInt();
+            opponents[n][opp] = input.readInt();
         }
 
     }
@@ -56,53 +54,35 @@ public int numberOfTeams(){
 
 }
 
-public Iterable<String> teams(){
+public Iterable<String> teams(){ 
     return actteams;
 }
-
-public int wins(String team){
-    if (team == null || !this.mapping.containsKey(team)){
-        throw new IllegalArgumentException();
-    }
+// Don't know why but the autograder is saying that these methods aren't working? Will make a private helper for the null checker
+public int wins(String team){ 
+    checker(team);
     return wins[this.mapping.get(team)];
 }
 
 public int losses(String team){
-    if (team == null || !this.mapping.containsKey(team)){
-        throw new IllegalArgumentException();
-    }
+    checker(team);
     return losses[this.mapping.get(team)];
 }
 
 public int remaining(String team){
-    if (team == null || !this.mapping.containsKey(team)){
-        throw new IllegalArgumentException();
-    }
-    return remaning[this.mapping.get(team)];
+    checker(team);
+    return remaining[this.mapping.get(team)];
 }
 
 
 public int against(String team1, String team2){
-    if (team1 == null){
-        throw new IllegalArgumentException();
-    }
-    if(!this.mapping.containsKey(team1)){
-        throw new IllegalArgumentException();
-    }
-    if (team2 == null){
-        throw new IllegalArgumentException();
-    }
-    if(!this.mapping.containsKey(team2)){
-        throw new IllegalArgumentException();
-    }
+    checker(team1);
+    checker(team2);
     return opponents[this.mapping.get(team1)][this.mapping.get(team2)];
 
 }
 
 public boolean isEliminated(String team){
-    if (team == null || !this.mapping.containsKey(team)){
-        throw new IllegalArgumentException();
-    }
+    checker(team);
 
     this.cut = new ArrayList<>();
     int maximumwins = this.wins(team) + this.remaining(team);
@@ -117,17 +97,17 @@ public boolean isEliminated(String team){
     }
 
     int verts = numb - 1;
-    int games = ((numb-1) *(numb-2)) /2;
+    int games = ((numb - 1) * (numb - 2)) / 2;
     int total = 2 + verts + games;
 
 
     HashMap<Integer,String> corteam = new HashMap<>();
     HashMap<Integer,List<Integer>> gameperteam = new HashMap<>();
-    int start = 1;
+    int source = 1;
     for(String game: this.teams()){
         if(!game.equals(team)){
-            corteam.put(start,game);
-            start+=1;
+            corteam.put(source,game);
+            ++source; // This looks cooler than the other way
         }
     }
     for (int i = 1; i <= verts - 1; i++){
@@ -135,8 +115,8 @@ public boolean isEliminated(String team){
             List<Integer> tracker = new ArrayList<>();
             tracker.add(i);
             tracker.add(j);
-            gameperteam.put(start,tracker);
-            start += 1;
+            gameperteam.put(source,tracker);
+            ++source;
         }
     }
 
@@ -145,12 +125,12 @@ public boolean isEliminated(String team){
         int vert = gameperteam.get(i).get(0);
         int vert1 = gameperteam.get(i).get(1);
 
-        int cap = this.against(corteam.get(vert),corteam.get(vert1));
-        FlowEdge edge = new FlowEdge(0,i,cap);
+        int cap = this.against(corteam.get(vert), corteam.get(vert1));
+        FlowEdge edge = new FlowEdge(0, i, cap);
         flow.addEdge(edge);
-        FlowEdge edge1 = new FlowEdge(i,vert,Integer.MAX_VALUE);
-        FlowEdge edge2 = new FlowEdge(i,vert1,Integer.MAX_VALUE);
+        FlowEdge edge1 = new FlowEdge(i,vert,Double.POSITIVE_INFINITY);
         flow.addEdge(edge1);
+        FlowEdge edge2 = new FlowEdge(i,vert1,Double.POSITIVE_INFINITY);
         flow.addEdge(edge2);
     }
 
@@ -181,9 +161,7 @@ public boolean isEliminated(String team){
 
 
 public Iterable<String> certificateOfElimination(String team){
-    if (team == null || !this.mapping.containsKey(team)){
-        throw new IllegalArgumentException();
-    }
+    checker(team);
 
     if(this.isEliminated(team)){
         return cut;
@@ -192,6 +170,14 @@ public Iterable<String> certificateOfElimination(String team){
 
 }
 
+private void checker(String team){
+    if(team == null){
+        throw new IllegalArgumentException();
+    }
+    if(!this.mappiung.containsKey(team)){
+        throw new IllegalArgumentException();
+    }
+}
 }
 
 /*ArrayList<String> result = new ArrayList<>();
