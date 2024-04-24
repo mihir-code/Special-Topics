@@ -163,7 +163,10 @@ public Iterable<String> certificateOfElimination(String team){
     if(!this.mapping.containsKey(team)){
         throw new IllegalArgumentException();
     }
-    if(this.isEliminated(team))
+    if(this.isEliminated(team)){
+        return cut;
+    }
+    return null;
 
 }
 
