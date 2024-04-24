@@ -98,7 +98,7 @@ public boolean isEliminated(String team){
             tracker.add(i);
             tracker.add(j);
             gameperteam.put(start,tracker);
-            start+=1;
+            start += 1;
         }
     }
     FlowNetwork flow = new FlowNetwork(total);
@@ -106,7 +106,7 @@ public boolean isEliminated(String team){
         int vert = gameperteam.get(i).get(0);
         int vert1 = gameperteam.get(i).get(1);
 
-        int cap = maximumwins - this.wins(corteam.get(i));
+        int cap = this.against(findTeam.get(vert),findTeam.get(vert1));
         FlowEdge edge = new FlowEdge(0,i,cap);
         flow.addEdge(edge);
         FlowEdge edge1 = new FlowEdge(i,vert,Integer.MAX_VALUE);
@@ -115,9 +115,25 @@ public boolean isEliminated(String team){
         flow.addEdge(edge2);
     }
     int aim = total - 1;
-    for(int i )
-
-
+    for(int i = 1; i <= verts; i++){
+        int cap = maximumwins - this.wins(corteam.get(i));
+        FlowEdge connect = new FlowEdge(i,target,cap);
+        flow.addEdge(connect);
+    }
+    FordFulkerson maxflow = new FordFulkerson(flow,0,target);
+    boolean lost = true;
+    for (FlowEdge edge : flow.adj(0)){
+        if(edge.flow() == edge.capacity){
+            elim = false;
+            break;
+        }
+    }
+    for (int i = 1; i <=verts;i++){
+        if(maxflow.inCut(i)){
+            cut.add(findTeam.get(i));
+        }
+    }
+    return elim;
     int maximumwins = this.wins(team) + this.remaining(team);
     for (String game : this.teams()){
         if(this.wins(game) > maximumwins){
@@ -125,11 +141,6 @@ public boolean isEliminated(String team){
         }
     }
 
-    
-    
-    
-    
-    
     /*ArrayList<String> result = new ArrayList<>();
     int t = getTeam(team);
     int verts = ((numbofteams -2) *(numbofteams *2)+ numbofteams -2) / 2;
@@ -145,7 +156,14 @@ public boolean isEliminated(String team){
     */
 }
 
-public Iterable<String> certificateOfElimination(String Team){
+public Iterable<String> certificateOfElimination(String team){
+    if (team == null){
+        throw new IllegalArgumentException();
+    }
+    if(!this.mapping.containsKey(team)){
+        throw new IllegalArgumentException();
+    }
+    if(this.isEliminated(team))
 
 }
 
