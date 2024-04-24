@@ -28,22 +28,22 @@ public BaseballElimination(String filename){
     if(filename == null){
         throw new IllegalArgumentException();
     }
-    this.numb = in.readInt();
+    In input = new In(filename);
+    this.numb = input.readInt();
     this.actteams = new ArrayList<>();
     this.victories = new int[numb];
     this.loss = new int[numb];
     this.gamesremaning = new int[numb];
     this.mapping = new HashMap<>();
-    In input = new In(filename);
     for (int i = 0; i < numbofteams; i++){
-        String teams = in.readString();
+        String teams = input.readString();
         actteams.add(teams);
         gamesremaning[i] = input.readInt();
         victories[i] = input.readInt();
         loss[i] = input.readInt();
         mapping.put(teams, i);
-        for (int opp = 0; i < numbofteams; i++){
-            opponents[i][j] = input.readInt();
+        for (int opp = 0; opp < numbofteams; opp++){
+            opponents[i][opp] = input.readInt();
         }
 
     }
@@ -117,15 +117,21 @@ public boolean isEliminated(String team){
     if(!cut.isEmpty()){
         return true;
     }
+    int maximumwins = this.wins(team) + this.remaining(team);
+    for (String game : this.teams()){
+        if(this.wins(game) > maximumwins){
+            cut.add(game);
+        }
+    }
     int verts = numb - 1;
-    int games = ((n-1) *(n-2)) /2;
+    int games = ((numb-1) *(numb-2)) /2;
     int total = 2 + verts + games;
     HashMap<Integer,String> corteam = new HashMap<>();
     HashMap<Integer,List<Integer>> gameperteam = new HashMap<>();
     int start = 1;
     for(String game: this.teams()){
         if(!game.equals(team)){
-            corteam(i,t);
+            corteam(start,game);
             start+=1;
         }
     }
@@ -143,7 +149,7 @@ public boolean isEliminated(String team){
         int vert = gameperteam.get(i).get(0);
         int vert1 = gameperteam.get(i).get(1);
 
-        int cap = this.against(findTeam.get(vert),findTeam.get(vert1));
+        int cap = this.against(corteam.get(vert),corteam.get(vert1));
         FlowEdge edge = new FlowEdge(0,i,cap);
         flow.addEdge(edge);
         FlowEdge edge1 = new FlowEdge(i,vert,Integer.MAX_VALUE);
@@ -154,29 +160,24 @@ public boolean isEliminated(String team){
     int aim = total - 1;
     for(int i = 1; i <= verts; i++){
         int cap = maximumwins - this.wins(corteam.get(i));
-        FlowEdge connect = new FlowEdge(i,target,cap);
+        FlowEdge connect = new FlowEdge(i,aim,cap);
         flow.addEdge(connect);
     }
-    FordFulkerson maxflow = new FordFulkerson(flow,0,target);
+    FordFulkerson maxflow = new FordFulkerson(flow,0,aim);
     boolean lost = false;
     for (FlowEdge edge : flow.adj(0)){
-        if(edge.flow() != edge.capacity){
-            elim = true;
+        if(edge.flow() != edge.cap){
+            lost = true;
             break;
         }
     }
     for (int i = 1; i <=verts;i++){
         if(maxflow.inCut(i)){
-            cut.add(findTeam.get(i));
+            cut.add(corteam.get(i));
         }
     }
-    return elim;
-    int maximumwins = this.wins(team) + this.remaining(team);
-    for (String game : this.teams()){
-        if(this.wins(game) > maximumwins){
-            cut.add(game);
-        }
-    }
+    return lost;
+    
 
     /*ArrayList<String> result = new ArrayList<>();
     int t = getTeam(team);
@@ -207,17 +208,4 @@ public Iterable<String> certificateOfElimination(String team){
 
 }
 
-private getTeam(String team){
-    if (team == null){
-        throw new IllegalArgumentException();
-        for (int t = 0; t < numbofteams; t++){
-            if (t.get(teams).equals(team)){
-                return t;
-            }
-            else{
-                throw new IllegalArgumentException();
-            }
-        }
-    }
-}
 }
