@@ -12,11 +12,11 @@ import java.util.Collections;
 
 
 public class BaseballElimination{
-    private int[] victories;
-    private int[] gamesremaning;
-    private int[] loss;
-    private int[][] opponents;
-    private int numbofteams;
+    private final int[] victories;
+    private final int[] gamesremaning;
+    private final int[] loss;
+    private final int[][] opponents;
+   // private int numbofteams;
     private final List <String> actteams;
     private List<String> cut;
     private final int numb;
@@ -35,14 +35,14 @@ public BaseballElimination(String filename){
     this.loss = new int[numb];
     this.gamesremaning = new int[numb];
     this.mapping = new HashMap<>();
-    for (int i = 0; i < numbofteams; i++){
+    for (int i = 0; i < numb; i++){
         String teams = input.readString();
         actteams.add(teams);
         gamesremaning[i] = input.readInt();
         victories[i] = input.readInt();
         loss[i] = input.readInt();
         mapping.put(teams, i);
-        for (int opp = 0; opp < numbofteams; opp++){
+        for (int opp = 0; opp < numb; opp++){
             opponents[i][opp] = input.readInt();
         }
 
@@ -50,8 +50,8 @@ public BaseballElimination(String filename){
     
 }
 
-public int numberofTeams(){
-    return numbofteams;
+public int numberOfTeams(){
+    return numb;
 
 }
 
@@ -88,6 +88,7 @@ public int remaining(String team){
     }
     return gamesremaning[this.mapping.get(team)];
 }
+
 
 public int against(String team1, String team2){
     if (team1 == null){
@@ -131,7 +132,7 @@ public boolean isEliminated(String team){
     int start = 1;
     for(String game: this.teams()){
         if(!game.equals(team)){
-            corteam(start,game);
+            corteam.put(start,game);
             start+=1;
         }
     }
@@ -166,7 +167,7 @@ public boolean isEliminated(String team){
     FordFulkerson maxflow = new FordFulkerson(flow,0,aim);
     boolean lost = false;
     for (FlowEdge edge : flow.adj(0)){
-        if(edge.flow() != edge.cap){
+        if(edge.flow() != edge.capacity()){
             lost = true;
             break;
         }
