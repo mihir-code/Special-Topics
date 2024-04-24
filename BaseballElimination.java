@@ -12,9 +12,9 @@ import java.util.Collections;
 
 
 public class BaseballElimination{
-    private final int[] victories;
-    private final int[] gamesremaning;
-    private final int[] loss;
+    private final int[] wins;
+    private final int[] remaning;
+    private final int[] losses;
     private final int[][] opponents;
    // private int numbofteams;
     private final List <String> actteams;
@@ -31,16 +31,17 @@ public BaseballElimination(String filename){
     In input = new In(filename);
     this.numb = input.readInt();
     this.actteams = new ArrayList<>();
-    this.victories = new int[numb];
-    this.loss = new int[numb];
-    this.gamesremaning = new int[numb];
+    this.wins = new int[numb];
+    this.losses = new int[numb];
+    this.remaning = new int[numb];
     this.mapping = new HashMap<>();
+    this.opponents = new int [numb][numb];
     for (int i = 0; i < numb; i++){
         String teams = input.readString();
         actteams.add(teams);
-        gamesremaning[i] = input.readInt();
-        victories[i] = input.readInt();
-        loss[i] = input.readInt();
+        remaning[i] = input.readInt();
+        wins[i] = input.readInt();
+        losses[i] = input.readInt();
         mapping.put(teams, i);
         for (int opp = 0; opp < numb; opp++){
             opponents[i][opp] = input.readInt();
@@ -60,33 +61,24 @@ public Iterable<String> teams(){
 }
 
 public int wins(String team){
-    if (team == null){
+    if (team == null || !this.mapping.containsKey(team)){
         throw new IllegalArgumentException();
     }
-    if(!this.mapping.containsKey(team)){
-        throw new IllegalArgumentException();
-    }
-    return victories[this.mapping.get(team)];
+    return wins[this.mapping.get(team)];
 }
 
 public int losses(String team){
-    if (team == null){
+    if (team == null || !this.mapping.containsKey(team)){
         throw new IllegalArgumentException();
     }
-    if(!this.mapping.containsKey(team)){
-        throw new IllegalArgumentException();
-    }
-    return loss[this.mapping.get(team)];
+    return losses[this.mapping.get(team)];
 }
 
 public int remaining(String team){
-    if (team == null){
+    if (team == null || !this.mapping.containsKey(team)){
         throw new IllegalArgumentException();
     }
-    if(!this.mapping.containsKey(team)){
-        throw new IllegalArgumentException();
-    }
-    return gamesremaning[this.mapping.get(team)];
+    return remaning[this.mapping.get(team)];
 }
 
 
@@ -108,25 +100,27 @@ public int against(String team1, String team2){
 }
 
 public boolean isEliminated(String team){
-    if (team == null){
+    if (team == null || !this.mapping.containsKey(team)){
         throw new IllegalArgumentException();
     }
-    if(!this.mapping.containsKey(team)){
-        throw new IllegalArgumentException();
-    }
+
     this.cut = new ArrayList<>();
-    if(!cut.isEmpty()){
-        return true;
-    }
     int maximumwins = this.wins(team) + this.remaining(team);
+
     for (String game : this.teams()){
         if(this.wins(game) > maximumwins){
             cut.add(game);
         }
     }
+    if(!cut.isEmpty()){
+        return true;
+    }
+
     int verts = numb - 1;
     int games = ((numb-1) *(numb-2)) /2;
     int total = 2 + verts + games;
+
+
     HashMap<Integer,String> corteam = new HashMap<>();
     HashMap<Integer,List<Integer>> gameperteam = new HashMap<>();
     int start = 1;
@@ -136,7 +130,7 @@ public boolean isEliminated(String team){
             start+=1;
         }
     }
-    for (int i = 1; 1 <= verts; i++){
+    for (int i = 1; i <= verts - 1; i++){
         for(int j = i + 1; j <= verts; j++){
             List<Integer> tracker = new ArrayList<>();
             tracker.add(i);
@@ -145,6 +139,7 @@ public boolean isEliminated(String team){
             start += 1;
         }
     }
+
     FlowNetwork flow = new FlowNetwork(total);
     for(int i = verts + 1; i < total - 1; i++){
         int vert = gameperteam.get(i).get(0);
@@ -154,16 +149,18 @@ public boolean isEliminated(String team){
         FlowEdge edge = new FlowEdge(0,i,cap);
         flow.addEdge(edge);
         FlowEdge edge1 = new FlowEdge(i,vert,Integer.MAX_VALUE);
-        flow.addEdge(edge1);
         FlowEdge edge2 = new FlowEdge(i,vert1,Integer.MAX_VALUE);
+        flow.addEdge(edge1);
         flow.addEdge(edge2);
     }
+
     int aim = total - 1;
     for(int i = 1; i <= verts; i++){
         int cap = maximumwins - this.wins(corteam.get(i));
         FlowEdge connect = new FlowEdge(i,aim,cap);
         flow.addEdge(connect);
     }
+
     FordFulkerson maxflow = new FordFulkerson(flow,0,aim);
     boolean lost = false;
     for (FlowEdge edge : flow.adj(0)){
@@ -172,6 +169,7 @@ public boolean isEliminated(String team){
             break;
         }
     }
+
     for (int i = 1; i <=verts;i++){
         if(maxflow.inCut(i)){
             cut.add(corteam.get(i));
@@ -179,8 +177,24 @@ public boolean isEliminated(String team){
     }
     return lost;
     
+}
 
-    /*ArrayList<String> result = new ArrayList<>();
+
+public Iterable<String> certificateOfElimination(String team){
+    if (team == null || !this.mapping.containsKey(team)){
+        throw new IllegalArgumentException();
+    }
+
+    if(this.isEliminated(team)){
+        return cut;
+    }
+    return null;
+
+}
+
+}
+
+/*ArrayList<String> result = new ArrayList<>();
     int t = getTeam(team);
     int verts = ((numbofteams -2) *(numbofteams *2)+ numbofteams -2) / 2;
     int winratio = victories[t] + gamesremaning[t];
@@ -193,20 +207,3 @@ public boolean isEliminated(String team){
         }
     }
     */
-}
-
-public Iterable<String> certificateOfElimination(String team){
-    if (team == null){
-        throw new IllegalArgumentException();
-    }
-    if(!this.mapping.containsKey(team)){
-        throw new IllegalArgumentException();
-    }
-    if(this.isEliminated(team)){
-        return cut;
-    }
-    return null;
-
-}
-
-}
