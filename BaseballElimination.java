@@ -14,7 +14,6 @@ public class BaseballElimination{
     private final int[] remaining;
     private final int[] losses;
     private final int[][] opponents;
-   // private int numbofteams;
     private final List <String> actteams;
     private List<String> cut;
     private final int numb;
@@ -174,7 +173,7 @@ private void checker(String team){
     if(team == null){
         throw new IllegalArgumentException();
     }
-    if(!this.mappiung.containsKey(team)){
+    if(!this.mapping.containsKey(team)){
         throw new IllegalArgumentException();
     }
 }
