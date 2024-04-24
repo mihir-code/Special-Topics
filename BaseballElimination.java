@@ -7,7 +7,8 @@ import edu.princeton.cs.algs4.FlowEdge;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
+import java.util.Collections;
+// import java.util.Maps;
 
 
 public class BaseballElimination{
@@ -93,9 +94,28 @@ public boolean isEliminated(String team){
     }
     for (int i = 1; 1 <= verts; i++){
         for(int j = i + 1; j <= verts; j++){
-            
+            List<Integer> tracker = new ArrayList<>();
+            tracker.add(i);
+            tracker.add(j);
+            gameperteam.put(start,tracker);
+            start+=1;
         }
     }
+    FlowNetwork flow = new FlowNetwork(total);
+    for(int i = verts + 1; i < total - 1; i++){
+        int vert = gameperteam.get(i).get(0);
+        int vert1 = gameperteam.get(i).get(1);
+
+        int cap = maximumwins - this.wins(corteam.get(i));
+        FlowEdge edge = new FlowEdge(0,i,cap);
+        flow.addEdge(edge);
+        FlowEdge edge1 = new FlowEdge(i,vert,Integer.MAX_VALUE);
+        flow.addEdge(edge1);
+        FlowEdge edge2 = new FlowEdge(i,vert1,Integer.MAX_VALUE);
+        flow.addEdge(edge2);
+    }
+    int aim = total - 1;
+    for(int i )
 
 
     int maximumwins = this.wins(team) + this.remaining(team);
