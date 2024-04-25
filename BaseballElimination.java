@@ -81,78 +81,77 @@ public int against(String team1, String team2){
 public boolean isEliminated(String team){
     checker(team);
 
-    this.cut = new ArrayList<>();
-    int maximumwins = this.wins(team) + this.remaining(team);
-
-    for (String game : this.teams()){
-        if(this.wins(game) > maximumwins){
-            cut.add(game);
-        }
+   this.cut = new ArrayList<>();
+   int maxnumofwins = this.wins(team) + this.remaining(team);
+   for(String game : this.teams()){
+    if(this.wins(game) > maxnumofwins){
+        cut.add(game);
     }
-    if(!cut.isEmpty()){
-        return true;
+   }
+   if(!cut.isEmpty()){
+    return true;
+   }
+   int verts = numb - 1;
+   int overts = ((numb - 1) *(numb - 2)) / 2;
+   int total = 2 + verts + overts;
+
+   HashMap<Integer,String> corTeam = new HashMap<>();
+   HashMap<Integer, List<Integer>> totalTeam = new HashMap<>();
+   int s = 1;
+   for(String game : this.teams()){
+    if(!game.equals(team)){
+        corTeam.put(s,game);
+        s+=1;
     }
+   }
 
-    int verts = numb - 1;
-    int games = ((numb - 1) * (numb - 2)) / 2;
-    int total = 2 + verts + games;
-
-
-    HashMap<Integer,String> corteam = new HashMap<>();
-    HashMap<Integer,List<Integer>> gameperteam = new HashMap<>();
-    int source = 1;
-    for(String game: this.teams()){
-        if(!game.equals(team)){
-            corteam.put(source,game);
-            source=+1; // This looks cooler than the other way
-        }
+   for(int i = 1; i <= verts - 1; i++){
+    for(int j = i + 1; j <= verts; j++){
+        List<Integer> tracker = new ArrayList<>();
+        tracker.add(i);
+        tracker.add(j);
+        totalTeam.put(s,tracker);
+        s+=1;
     }
-    for (int i = 1; i <= verts - 1; i++){
-        for(int j = i + 1; j <= verts; j++){
-            List<Integer> tracker = new ArrayList<>();
-            tracker.add(i);
-            tracker.add(j);
-            gameperteam.put(source,tracker);
-            source=+1;
-        }
-    }
+   }
 
-    FlowNetwork flow = new FlowNetwork(total);
-    for(int i = verts + 1; i < total - 1; i++){
-        int vert = gameperteam.get(i).get(0);
-        int vert1 = gameperteam.get(i).get(1);
+   FlowNetwork flow = new FlowNetwork(total);
+   for(int z = verts + 1; z < total - 1; z++){
+    int t = totalTeam.get(z).get(0);
+    int t1 = totalTeam.get(z).get(1);
+    int cap = this.against(corTeam.get(t), corTeam.get(t1));
+    FlowEdge edge = new FlowEdge(0,z,cap);
+    flow.addEdge(edge);
+    FlowEdge edge1 = new FlowEdge(z, t, Integer.MAX_VALUE);
+    FlowEdge edge2 = new FlowEdge(z, t1, Integer.MAX_VALUE);
+    flow.addEdge(edge1);
+    flow.addEdge(edge2);
+   }
 
-        int cap = this.against(corteam.get(vert), corteam.get(vert1));
-        FlowEdge edge = new FlowEdge(0, i, cap);
-        flow.addEdge(edge);
-        FlowEdge edge1 = new FlowEdge(i,vert,Double.POSITIVE_INFINITY);
-        FlowEdge edge2 = new FlowEdge(i,vert1,Double.POSITIVE_INFINITY);
-        flow.addEdge(edge1);
-        flow.addEdge(edge2);
-    }
+   int goal = total - 1;
+   for (int z = 1; z <= verts; z++){
+    int cap = maxnumofwins - this.wins(corTeam.get(z));
+    FlowEdge edge3 = new FlowEdge(z, goal, cap);
+    flow.addEdge(edge3);
+   }
 
-    int aim = total - 1;
-    for(int i = 1; i <= verts; i++){
-        int cap = maximumwins - this.wins(corteam.get(i));
-        FlowEdge connect = new FlowEdge(i,aim,cap);
-        flow.addEdge(connect);
+   FordFulkerson maxflow = new FordFulkerson(flow, 0, goal);
+   boolean out = false;
+   for(FlowEdge edge3 : flow.adj(0)){
+    if(edge3.flow() != edge3.capacity()){
+        out = true;
+        break;
     }
+   } 
 
-    FordFulkerson maxflow = new FordFulkerson(flow,0,aim);
-    boolean lost = false;
-    for (FlowEdge edge : flow.adj(0)){
-        if(edge.flow() != edge.capacity()){
-            lost = true;
-            break;
-        }
+   for (int z= 1; z < verts; z++){
+    if(maxflow.inCut(z)){
+        cut.add(corTeam.get(z));
     }
+   }
+   return out;
 
-    for (int i = 1; i <=verts;i++){
-        if(maxflow.inCut(i)){
-            cut.add(corteam.get(i));
-        }
-    }
-    return lost;
+
     
 }
 
