@@ -1,4 +1,3 @@
-import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.FordFulkerson;
 import edu.princeton.cs.algs4.FlowNetwork;
@@ -6,6 +5,7 @@ import edu.princeton.cs.algs4.FlowEdge;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class BaseballElimination{
@@ -13,11 +13,13 @@ public class BaseballElimination{
     private final int[] remaining;
     private final int[] losses;
     private final int[][] opponents;
-    private final List <String> actteams;
+    // private final List <String> actteams;
     private List<String> cut;
     private final int numb;
-    private final HashMap<String,Integer> mapping;
-    
+    private final HashMap<String, Integer> mapping;
+    private final Map<String, Integer> actteam = new HashMap<>();
+    private final Map<String, Integer> team = new HashMap<>();
+    private List<String> eliminated = new ArrayList<>(); 
 
 
 public BaseballElimination(String filename){
@@ -34,7 +36,8 @@ public BaseballElimination(String filename){
     this.opponents = new int [numb][numb];
     for (int n = 0; n < numb; n++){
         String team = input.readString();
-        actteams.add(team);
+        actteams.put(team,n);
+        team.put(n, team);
         remaining[n] = input.readInt();
         wins[n] = input.readInt();
         losses[n] = input.readInt();
@@ -47,109 +50,94 @@ public BaseballElimination(String filename){
     
 }
 
+private void checker(String team){
+    if(team == null){
+        throw new IllegalArgumentException();
+    }
+    if(!this.mapping.containsKey(team)){
+        throw new IllegalArgumentException();
+    }
+}
 public int numberOfTeams(){
     return numb;
 
 }
 public Iterable<String> teams(){ 
-    return actteams;
+    return actteam.keySet();
 }
 // Don't know why but the autograder is saying that these methods aren't working? Will make a private helper for the null checker
 public int wins(String team){ 
     checker(team);
-    return wins[this.mapping.get(team)];
+    return wins[actteam.get(team)];
 }
 
 public int losses(String team){
     checker(team);
-    return losses[this.mapping.get(team)];
+    return losses[actteam.get(team)];
 }
 
 public int remaining(String team){
     checker(team);
-    return remaining[this.mapping.get(team)];
+    return remaining[actteam.get(team)];
 }
 
 
 public int against(String team1, String team2){
     checker(team1);
     checker(team2);
-    return opponents[this.mapping.get(team1)][this.mapping.get(team2)];
+    return opponents[actteam.get(team1)][actteam.get(team2)];
 
 }
 
 public boolean isEliminated(String team){
     checker(team);
 
-   this.cut = new ArrayList<>();
-   int maxnumofwins = this.wins(team) + this.remaining(team);
-   for(String game : this.teams()){
-    if(this.wins(game) > maxnumofwins){
-        cut.add(game);
+    eliminated = new ArrayList<>();
+    int numofwins = wins(team) + remaining(team);
+    boolean lost = false;
+
+    for (String game: teams()){
+        if(numofwins < wins(game)){
+            eliminated.add(game);
+            lost = true;
+        }
     }
-   }
-   if(!cut.isEmpty()){
-    return true;
-   }
-   int verts = numb - 1;
-   int overts = ((numb - 1) *(numb - 2)) / 2;
-   int total = 2 + verts + overts;
 
-   HashMap<Integer,String> corTeam = new HashMap<>();
-   HashMap<Integer, List<Integer>> totalTeam = new HashMap<>();
-   int s = 1;
-   for(String game : this.teams()){
-    if(!game.equals(team)){
-        corTeam.put(s,game);
-        s+=1;
+    if(lost){
+        return true;
     }
-   }
 
-   for(int i = 1; i <= verts - 1; i++){
-    for(int j = i + 1; j <= verts; j++){
-        List<Integer> tracker = new ArrayList<>();
-        tracker.add(i);
-        tracker.add(j);
-        totalTeam.put(s,tracker);
-        s+=1;
+    int t = actteam.get(team);
+    int vert = ((numb - 1) * (numb -2)) /2;
+    int curvert = 0;
+    int s = curvet++;
+    int a = curvet++;
+    Map<Integer, Integer> totalverts = new HashMap<>();
+    for(String name : actteam.keySet()){
+        int cur = actteam.get(name);
+        if(cur == t){
+            continue;
+        }
+     totalverts.put(cur, curvert++);   
     }
-   }
 
-   FlowNetwork flow = new FlowNetwork(total);
-   for(int z = verts + 1; z < total - 1; z++){
-    int t = totalTeam.get(z).get(0);
-    int t1 = totalTeam.get(z).get(1);
-    int cap = this.against(corTeam.get(t), corTeam.get(t1));
-    FlowEdge edge = new FlowEdge(0,z,cap);
-    flow.addEdge(edge);
-    FlowEdge edge1 = new FlowEdge(z, t, Integer.MAX_VALUE);
-    FlowEdge edge2 = new FlowEdge(z, t1, Integer.MAX_VALUE);
-    flow.addEdge(edge1);
-    flow.addEdge(edge2);
-   }
+    FlowNetwork flow = new FlowNetwork(vert + numb + 1);
+    for (int n = 0;n < numb; n++ ){
+        if(t == n){
+            continue;
+        }
+        for (int i =0; i <numb; i++){
+            if(t == i){
+                continue;
+            }
 
-   int goal = total - 1;
-   for (int z = 1; z <= verts; z++){
-    int cap = maxnumofwins - this.wins(corTeam.get(z));
-    FlowEdge edge3 = new FlowEdge(z, goal, cap);
-    flow.addEdge(edge3);
-   }
-
-   FordFulkerson maxflow = new FordFulkerson(flow, 0, goal);
-   boolean out = false;
-   for(FlowEdge edge3 : flow.adj(0)){
-    if(edge3.flow() != edge3.capacity()){
-        out = true;
-        break;
+            flow.addEdge(new FlowEdge(s,curvert, opponents[n][i]));
+            flow.addEdge(new FlowEdge(s,totalverts.get(n),Double.POSITIVE_INFINITY));
+            flow.addEdge(new FlowEdge(s,totalverts.get(i),Double.POSITIVE_INFINITY));
+            curvert++;
+        }
     }
-   } 
-
-   for (int z= 1; z < verts; z++){
-    if(maxflow.inCut(z)){
-        cut.add(corTeam.get(z));
-    }
-   }
-   return out;
+    
 
 
     
@@ -166,12 +154,4 @@ public Iterable<String> certificateOfElimination(String team){
 
 }
 
-private void checker(String team){
-    if(team == null){
-        throw new IllegalArgumentException();
-    }
-    if(!this.mapping.containsKey(team)){
-        throw new IllegalArgumentException();
-    }
-}
 }
