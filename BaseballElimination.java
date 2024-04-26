@@ -1,3 +1,11 @@
+/**
+ * @author Mihir Motukuri attests that this code is their original work and was written in compliance with the class Academic Integrity and Collaboration Policy found in the syllabus. 
+ */
+/* For the longest time, I was stuck at a 61 but thought about it and realized that the order for the arrays in the constructor matter. 
+*  I noticed that everything was off by 1 in the Coursera Autograder so the order actually does matter. The other thing is that it makes sense as we are reading it. 
+   Pretty upset at myself for not realizing that. 
+ */
+
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.FordFulkerson;
 import edu.princeton.cs.algs4.FlowNetwork;
@@ -10,16 +18,16 @@ import java.util.Map;
 
 public class BaseballElimination{
     private final int numb; // number of teams
-    private final Map<String, Integer> actteam = new HashMap<>();
-    private final Map<Integer, String> tea = new HashMap<>();
-    private final int[] wins;
     private final int[] remaining;
+    private final Map<String, Integer> actteam = new HashMap<>();
     private final int[] losses;
+    private final int[] wins;
+    private final Map<Integer, String> tea = new HashMap<>();
     private final int[][] opponents;
     // private final List <String> actteams;
+    private List<String> eliminated = new ArrayList<>(); 
     // private List<String> cut;
     // private final HashMap<String, Integer> mapping;
-    private List<String> eliminated = new ArrayList<>(); 
 
 
 public BaseballElimination(String filename){
