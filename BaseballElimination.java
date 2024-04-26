@@ -9,16 +9,16 @@ import java.util.Map;
 
 
 public class BaseballElimination{
+    private final int numb; // number of teams
+    private final Map<String, Integer> actteam = new HashMap<>();
+    private final Map<Integer, String> tea = new HashMap<>();
     private final int[] wins;
     private final int[] remaining;
     private final int[] losses;
     private final int[][] opponents;
     // private final List <String> actteams;
-    private List<String> cut;
-    private final int numb;
-    private final HashMap<String, Integer> mapping;
-    private final Map<String, Integer> actteam = new HashMap<>();
-    private final Map<String, Integer> team = new HashMap<>();
+    // private List<String> cut;
+    // private final HashMap<String, Integer> mapping;
     private List<String> eliminated = new ArrayList<>(); 
 
 
@@ -27,21 +27,20 @@ public BaseballElimination(String filename){
         throw new IllegalArgumentException();
     }
     In input = new In(filename);
-    this.numb = input.readInt();
-    this.actteams = new ArrayList<>();
-    this.mapping = new HashMap<>();
-    this.wins = new int[numb];
-    this.losses = new int[numb];
-    this.remaining = new int[numb];
-    this.opponents = new int [numb][numb];
+    numb = input.readInt();
+    wins = new int[numb];
+    losses = new int[numb];
+    remaining = new int[numb];
+    opponents = new int [numb][numb];
+    // this.mapping = new HashMap<>();
     for (int n = 0; n < numb; n++){
-        String team = input.readString();
-        actteams.put(team,n);
-        team.put(n, team);
-        remaining[n] = input.readInt();
+        String t = input.readString();
+        actteam.put(t,n);
+        tea.put(n, t);
         wins[n] = input.readInt();
         losses[n] = input.readInt();
-        mapping.put(team, n);
+        remaining[n] = input.readInt();
+        // mapping.put(team, n);
         for (int j = 0; j < numb; j++){
             opponents[n][j] = input.readInt();
         }
@@ -51,10 +50,7 @@ public BaseballElimination(String filename){
 }
 
 private void checker(String team){
-    if(team == null){
-        throw new IllegalArgumentException();
-    }
-    if(!this.mapping.containsKey(team)){
+    if(!actteam.containsKey(team)){
         throw new IllegalArgumentException();
     }
 }
@@ -90,54 +86,79 @@ public int against(String team1, String team2){
 }
 
 public boolean isEliminated(String team){
-    checker(team);
+    checker(team); // if team doesn't exist, throw error.
 
-    eliminated = new ArrayList<>();
-    int numofwins = wins(team) + remaining(team);
-    boolean lost = false;
+    eliminated = new ArrayList<>(); // initialize the new ArrayList to store the list of teams that were or are eliminated.
+    int numofwins = wins(team) + remaining(team); // max number of wins
+    boolean lost = false; // initialize a variable to check for elimination
 
     for (String game: teams()){
         if(numofwins < wins(game)){
             eliminated.add(game);
             lost = true;
         }
-    }
+    } // if a team has more wins than "numofwins", they are added to the list.
 
     if(lost){
         return true;
     }
 
     int t = actteam.get(team);
-    int vert = ((numb - 1) * (numb -2)) /2;
+    int vert = ((numb - 1) * (numb -2)) /2; // believe that this is the calculated amount
     int curvert = 0;
-    int s = curvet++;
-    int a = curvet++;
-    Map<Integer, Integer> totalverts = new HashMap<>();
+    int s = curvert++;
+    int a = curvert++;
+    Map<Integer, Integer> totalverts = new HashMap<>(); // maps the verts in the flow network
     for(String name : actteam.keySet()){
         int cur = actteam.get(name);
         if(cur == t){
             continue;
         }
-     totalverts.put(cur, curvert++);   
+     totalverts.put(cur, curvert++);  // assigns each team verts in the flow network
     }
 
-    FlowNetwork flow = new FlowNetwork(vert + numb + 1);
-    for (int n = 0;n < numb; n++ ){
+    FlowNetwork flownet = new FlowNetwork(vert + numb + 1);
+    for (int n = 0; n < numb; n++){
         if(t == n){
             continue;
         }
-        for (int i =0; i <numb; i++){
+        for (int i = n + 1; i <numb; i++){
             if(t == i){
                 continue;
             }
 
-            flow.addEdge(new FlowEdge(s,curvert, opponents[n][i]));
-            flow.addEdge(new FlowEdge(s,totalverts.get(n),Double.POSITIVE_INFINITY));
-            flow.addEdge(new FlowEdge(s,totalverts.get(i),Double.POSITIVE_INFINITY));
+            flownet.addEdge(new FlowEdge(s,curvert, opponents[n][i])); // adds verts between each matchup
+            flownet.addEdge(new FlowEdge(curvert,totalverts.get(n),Double.POSITIVE_INFINITY));
+            flownet.addEdge(new FlowEdge(curvert,totalverts.get(i),Double.POSITIVE_INFINITY)); // capacity as infinity, 
             curvert++;
         }
     }
-    
+    for(int n = 0; n < numb; n++){
+        if(t == n){
+            continue;
+        }
+        flownet.addEdge(new FlowEdge(totalverts.get(n), a, Math.max(0,wins[t] + remaining[t] - wins[n]))); // this is the maximum possible wins a team can get
+    }
+    FordFulkerson f = new FordFulkerson(flownet, s, a);
+    for(FlowEdge edge: flownet.adj(s)){
+        if(edge.flow() != edge.capacity()){ // If the max flow equals the total cap, team isn't eliminated
+            lost = true;
+        break;
+        }
+    }
+    if(lost){
+        for(int n = 0; n < numb; n++){
+            if(t == n){
+                continue;
+            }
+            if(f.inCut(totalverts.get(n))){
+                eliminated.add(tea.get(n));
+            }
+        }
+        return true; // we check if the corvertex is part of mincut and if it is, it's part of the eliminated.
+        
+    }
+return false; // if not eliminated.
 
 
     
@@ -147,8 +168,8 @@ public boolean isEliminated(String team){
 public Iterable<String> certificateOfElimination(String team){
     checker(team);
 
-    if(this.isEliminated(team)){
-        return cut;
+    if(isEliminated(team)){
+        return eliminated;
     }
     return null;
 
