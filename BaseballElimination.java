@@ -22,7 +22,7 @@ public class BaseballElimination{
     private final Map<String, Integer> actteam = new HashMap<>();
     private final int[] losses;
     private final int[] wins;
-    private final Map<Integer, String> tea = new HashMap<>();
+    private final Map<Integer, String> tea = new HashMap<>(); // Used this after seeing matt's code
     private final int[][] opponents;
     // private final List <String> actteams;
     private List<String> eliminated = new ArrayList<>(); 
@@ -37,8 +37,8 @@ public BaseballElimination(String filename){
     In input = new In(filename);
     numb = input.readInt();
     wins = new int[numb];
-    losses = new int[numb];
     remaining = new int[numb];
+    losses = new int[numb];
     opponents = new int [numb][numb];
     // this.mapping = new HashMap<>();
     for (int n = 0; n < numb; n++){
@@ -136,8 +136,8 @@ public boolean isEliminated(String team){
             }
 
             flownet.addEdge(new FlowEdge(s,curvert, opponents[n][i])); // adds verts between each matchup
-            flownet.addEdge(new FlowEdge(curvert,totalverts.get(n),Double.POSITIVE_INFINITY));
-            flownet.addEdge(new FlowEdge(curvert,totalverts.get(i),Double.POSITIVE_INFINITY)); // capacity as infinity, 
+            flownet.addEdge(new FlowEdge(curvert,totalverts.get(n),Integer.MAX_VALUE)); // changed this after talking to matt
+            flownet.addEdge(new FlowEdge(curvert,totalverts.get(i),Integer.MAX_VALUE)); // capacity as infinity, 
             curvert++;
         }
     }
