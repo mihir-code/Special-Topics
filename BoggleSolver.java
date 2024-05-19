@@ -25,13 +25,23 @@ public class BoggleSolver{
             i.w = true;
         }
         else{
-            char c = word.charAt(l);
-            i.n[c - 'A'] = add(i.n[c - 'A'], word, l + 1); // need single characters to denote a character
+            char chat = word.charAt(l);
+            i.n[chat - 'A'] = add(i.n[chat - 'A'], word, l + 1); // need single characters to denote a character
         }
         return i;
     }
 
-    private Node get
+    private Node get(Node i, String word, int l){
+        if (i == null){
+            i = new Node();
+        }
+        if (l == word.length()){
+            return i;
+        }
+        char chat = word.charAt(l);
+        Node g = get(i.n[chat - 'A'], word, l + 1);
+        return g;
+    }
 
     private static class Cube {
         private int side = 0;
@@ -49,14 +59,29 @@ public class BoggleSolver{
         if(word == null){
             throw new IllegalArgumentException();
         }
+        Node i = get(root,word,0);
+        if (i == null){
+            return false;
+        }
+        return i.w;
     }
     public BoggleSolver(String[] dictionary){
         if(dictionary == null){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException();            
+        }
+        for(int i = 0; i < dictionary.length; i++){
+            put(dictionary[i]);
         }
 
     }
     public Iterable<String> getAllValidWords(BoggleBoard board){
+        if (board == null){
+            throw new IllegalArgumentException();
+        }
+        if (row != board.rows() || col != board.cols()) {
+            row = board.rows();
+            col = board.cols();
+        }
 
     }
     public int scoreOf(String word){
