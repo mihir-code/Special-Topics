@@ -81,6 +81,15 @@ public class BoggleSolver{
         if (row != board.rows() || col != board.cols()) {
             row = board.rows();
             col = board.cols();
+            this.board = new char[row * col];
+            marked = new boolean[row * col];
+            
+        }
+        for (int i = 0; i < row; i++){
+            for (int x = 0; x < col; x++){
+                int j = i * col + x;
+                char chat = board.getLetter(i,x);
+            }
         }
 
     }
