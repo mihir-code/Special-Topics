@@ -89,6 +89,7 @@ public class BoggleSolver{
                 int nt = normal[j].adj[ind];
                 if(!t[nt]){
                     DFS(nt, new StringBuilder(before), w, n);
+                    // before.setLength(before.length() - (chat == 'Q')); 
                 }
             }
             t[j] = false;
