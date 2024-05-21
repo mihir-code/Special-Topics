@@ -89,6 +89,7 @@ public class BoggleSolver{
             for (int x = 0; x < col; x++){
                 int j = i * col + x;
                 char chat = board.getLetter(i,x);
+                this.board[j] = chat;
             }
         }
 
