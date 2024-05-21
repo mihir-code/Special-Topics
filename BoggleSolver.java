@@ -55,7 +55,7 @@ public class BoggleSolver{
         if (word == null){
             throw new IllegalArgumentException();
         }
-        b = add(b,word,0); // add to the root.
+        b = add(b,word,0); 
 
     }
     private boolean contains(String word){
