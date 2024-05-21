@@ -99,7 +99,24 @@ public class BoggleSolver{
             }
             t[j] = false;
     }
-    
+    private void compute(BoggleBoard board){
+        normal = new Cube[row * col];
+        for (int i = 0; i < row; i++){
+            for (int x = 0; x < col; x++){
+                int j = i * col + x;
+                normal[j] = new Cube(); 
+                int count = 0;
+                for(int z = Math.max(0, i -1); z <=Math.min(row-1, i + 1);z++){
+                    for(int h = Math.max(0, x -1); h<=Math.min(col-1, x + 1);h++){
+                        if(!(z == i && h == x)){
+                            normal[j].adj[count++] = z * col + h;
+                        }
+                    }   
+                }
+               normal[j].side = count;
+            }
+        }
+    }
     private SET<String> DFS() {
         SET<String> w = new SET<String>();
         for (int x = 0; x < row * col; x++){
@@ -165,22 +182,5 @@ public class BoggleSolver{
         }
 
     }
-    private void compute(BoggleBoard board){
-        normal = new Cube[row * col];
-        for (int i = 0; i < row; i++){
-            for (int x = 0; x < col; x++){
-                int j = i * col + x;
-                normal[j] = new Cube(); 
-                int count = 0;
-                for(int z = Math.max(0, i -1); z <=Math.min(row-1, i + 1);z++){
-                    for(int h = Math.max(0, x -1); h<=Math.min(col-1, x + 1);h++){
-                        if(!(z == i && h == x)){
-                            normal[j].adj[count++] = z * col + h;
-                        }
-                    }   
-                }
-               normal[j].side = count;
-            }
-        }
-    }
+
 }
