@@ -33,14 +33,13 @@ public class BoggleSolver{
 
     private Node get(Node i, String word, int l){
         if (i == null){
-            i = new Node();
+            return null;
         }
         if (l == word.length()){
             return i;
         }
         char chat = word.charAt(l);
-        Node g = get(i.n[chat - 'A'], word, l + 1);
-        return g;
+        return get(i.n[chat - 'A'], word, l+1);
     }
 
     private static class Cube {
@@ -52,55 +51,54 @@ public class BoggleSolver{
         if (word == null){
             throw new IllegalArgumentException();
         }
-        root = add(root,word,0); // add to the root.
+        b = add(b,word,0); // add to the root.
 
     }
     private boolean contains(String word){
         if(word == null){
             throw new IllegalArgumentException();
         }
-        Node i = get(root,word,0);
+        Node i = get(b,word,0);
         if (i == null){
             return false;
         }
         return i.w;
     }
-    private void DFS(int j, StringBuilder before, SET<String> w, Node n){
+    private void DFS(int j, StringBuilder before, SET<String> w, Node node){
         char chat = board[j];
-        Node node = n.n[c-'A'];
+        Node n = node.n[chat-'A'];
             // for the QU
-        if (chat == 'Q' && node != null){
-            node = node.node['U' - 'A'];
-            if(node == null){
+        if (chat == 'Q' && n != null){
+            n = n.n['U' - 'A'];
+            if(n == null){
                 return;
             }
+        }
+        if (n == null){ // maybe redundunt
+            return;
+        }
+            int intln = before.length();
             if(chat == 'Q'){
                 before.append("QU");
             }
             else{
                 before.append(chat);
             }
-            String cur = before.toString();
-            if (node.w && before.length() > 2){
-                w.add(cur);
+
+            if (n.w && before.length() > 2){
+                w.add(before.toString());
             }
             t[j] = true;
 
             for(int ind = 0; ind < normal[j].side; ind++){
                 int nt = normal[j].adj[ind];
                 if(!t[nt]){
-                    DFS(nt, before, word, node);
+                    DFS(nt, before, w, n);
                 }
             }
             t[j] = false;
             // getting rid of QU
-            if(chat == 'Q'){
-                before.setLength(before.length() - 2); 
-            }
-            else{
-                before.setLength(before.length() - 1);
-            }
-        }
+            before.setLength(intln);
     }
     
     private SET<String> DFS() {
@@ -128,7 +126,7 @@ public class BoggleSolver{
             row = board.rows();
             col = board.cols();
             this.board = new char[row * col];
-            marked = new boolean[row * col];
+            t = new boolean[row * col];
             
         }
         for (int i = 0; i < row; i++){
@@ -138,6 +136,8 @@ public class BoggleSolver{
                 this.board[j] = chat;
             }
         }
+        SET<String> valid = DFS();
+        return valid;
 
     }
     public int scoreOf(String word){
