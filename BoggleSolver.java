@@ -69,12 +69,12 @@ public class BoggleSolver{
         char chat = board[j];
         Node node = n.n[c-'A'];
             // for the QU
-        if (c == 'Q' && node != null){
+        if (chat == 'Q' && node != null){
             node = node.node['U' - 'A'];
             if(node == null){
                 return;
             }
-            if( c== 'Q'){
+            if(chat == 'Q'){
                 before.append("QU");
             }
             else{
@@ -88,14 +88,27 @@ public class BoggleSolver{
 
             for(int ind = 0; ind < normal[j].side; ind++){
                 int nt = normal[j].adj[ind];
-                if(!t[nt])
+                if(!t[nt]){
+                    DFS(nt, before, word, node);
+                }
+            }
+            t[j] = false;
+            // getting rid of QU
+            if(chat == 'Q'){
+                before.setLength(before.length() - 2); 
+            }
+            else{
+                before.setLength(before.length() - 1);
             }
         }
     }
     
     private SET<String> DFS() {
         SET<String> w = new SET<String>();
-        int x; 
+        for (int x = 0; x < row * col; x++){
+            DFS(x,new StringBuilder(), w, b);
+        }
+        return w;
 
     }
     public BoggleSolver(String[] dictionary){
@@ -128,6 +141,28 @@ public class BoggleSolver{
 
     }
     public int scoreOf(String word){
+
+        if (!contains(word)){
+            return 0;
+        }
+        else if(word.length() < 3){
+            return 0;
+        }
+        else if(word.length() < 5){
+            return 1;
+        }
+        else if(word.length() == 5){
+            return 2;
+        }
+        else if(word.length() == 6){
+            return 3;
+        }
+        else if(word.length() == 7){
+            return 5;
+        }
+        else{
+            return 11;
+        }
 
     }
 }
