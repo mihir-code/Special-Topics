@@ -9,7 +9,7 @@ public class BoggleSolver{
     private int row;
     private int col;
     private Cube[] normal;
-    private Node node;
+    private Node b;
     private char[] board;
     private boolean[] t;
     
@@ -64,6 +64,39 @@ public class BoggleSolver{
             return false;
         }
         return i.w;
+    }
+    private void DFS(int j, StringBuilder before, SET<String> w, Node n){
+        char chat = board[j];
+        Node node = n.n[c-'A'];
+            // for the QU
+        if (c == 'Q' && node != null){
+            node = node.node['U' - 'A'];
+            if(node == null){
+                return;
+            }
+            if( c== 'Q'){
+                before.append("QU");
+            }
+            else{
+                before.append(chat);
+            }
+            String cur = before.toString();
+            if (node.w && before.length() > 2){
+                w.add(cur);
+            }
+            t[j] = true;
+
+            for(int ind = 0; ind < normal[j].side; ind++){
+                int nt = normal[j].adj[ind];
+                if(!t[nt])
+            }
+        }
+    }
+    
+    private SET<String> DFS() {
+        SET<String> w = new SET<String>();
+        int x; 
+
     }
     public BoggleSolver(String[] dictionary){
         if(dictionary == null){
