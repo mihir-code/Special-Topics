@@ -1,4 +1,9 @@
 
+/**
+ * @author Mihir Motukuri attests that this code is their original work and was written in compliance with the class Academic Integrity and Collaboration Policy found in the syllabus. 
+ *  The part about optimization with the precompute was quite difficult to understand with the boundaries and everything. My compute method figures out the adajcent cells through a count variabels
+ * and it finds the cell within each grid.
+ */
 
 import edu.princeton.cs.algs4.SET;
 
