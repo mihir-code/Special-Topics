@@ -1,7 +1,6 @@
-import edu.princeton.cs.algs4.SET;
-import edu.princeton.cs.algs4.In;
-import edu.princeton.cs.algs4.StdOut;
 
+
+import edu.princeton.cs.algs4.SET;
 
 public class BoggleSolver{
 
@@ -70,35 +69,29 @@ public class BoggleSolver{
             // for the QU
         if (chat == 'Q' && n != null){
             n = n.n['U' - 'A'];
-            if(n == null){
-                return;
-            }
         }
-        if (n == null){ // maybe redundunt
+        if(n == null){
             return;
         }
-            int intln = before.length();
             if(chat == 'Q'){
                 before.append("QU");
             }
             else{
                 before.append(chat);
             }
-
+            String sg = before.toString();
             if (n.w && before.length() > 2){
-                w.add(before.toString());
+                w.add(sg);
             }
             t[j] = true;
 
             for(int ind = 0; ind < normal[j].side; ind++){
                 int nt = normal[j].adj[ind];
                 if(!t[nt]){
-                    DFS(nt, before, w, n);
+                    DFS(nt, new StringBuilder(before), w, n);
                 }
             }
             t[j] = false;
-            // getting rid of QU
-            before.setLength(intln);
     }
     
     private SET<String> DFS() {
@@ -127,6 +120,7 @@ public class BoggleSolver{
             col = board.cols();
             this.board = new char[row * col];
             t = new boolean[row * col];
+            compute(board);
             
         }
         for (int i = 0; i < row; i++){
@@ -164,5 +158,23 @@ public class BoggleSolver{
             return 11;
         }
 
+    }
+    private void compute(BoggleBoard board){
+        normal = new Cube[row * col];
+        for (int i = 0; i < row; i++){
+            for (int x = 0; x < col; x++){
+                int j = i * col + x;
+                normal[j] = new Cube(); 
+                int count = 0;
+                for(int z = Math.max(0, i -1); z <=Math.min(row-1, i + 1);z++){
+                    for(int h = Math.max(0, x -1); h<=Math.min(col-1, x + 1);h++){
+                        if(!(z == i && h == x)){
+                            normal[j].adj[count++] = z * col + h;
+                        }
+                    }   
+                }
+               normal[j].side = count;
+            }
+        }
     }
 }
